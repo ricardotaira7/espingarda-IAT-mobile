@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espingarda Cal.12 — Ricardo Taira · Instrutor IAT · Combat Tático</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ══════════════ RESET ══════════════ */
+*{margin:0;padding:0;box-sizing:border-box;}
+
+/* ══════════════ BASE DE ESCALA ══════════════
+   16px fixo + clamp.
+   Todos os tamanhos em rem escalam juntos.
+   Com F11 a viewport cresce — mais espaço — layout respira.
+   Sem F11 o conteúdo ainda cabe, ajustado via flex.
+*/
+html{ font-size:clamp(14px, 1.95vh, 20px); } /* 1080p — ~19px, legível mas cabe melhor */
+body{
+  width:100%;height:100%;
+  font-family:'DM Sans',sans-serif;
+  overflow:hidden;
+  background-color:#F5F0E8;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='6' height='6' fill='%23F5F0E8'/%3E%3Ccircle cx='1' cy='1' r='0.8' fill='%23E5DDD0' opacity='0.6'/%3E%3Ccircle cx='4' cy='4' r='0.8' fill='%23E5DDD0' opacity='0.6'/%3E%3C/svg%3E");
+  background-size:6px 6px;
+}
+
+/* ══════════════ VARS ══════════════ */
+:root{
+  --br:#6B1E00; --bm:#9B3A10; --goldb:#BF9020;
+  --text:#1A1008; --muted:#4A3020; --light:#7A6050;
+  --bd:#D8CCC0; --card:rgba(255,255,255,0.90);
+  --grn:#1A5520; --red:#8B1010; --shd:rgba(100,40,0,0.10);
+  --nav:48px;
+}
+
+/* ══════════════ ASSINATURA ══════════════ */
+.sig{
+  position:fixed;bottom:18px;right:16px;z-index:997;
+  pointer-events:none;
+}
+.sig a{
+  display:inline-flex;align-items:center;gap:6px;
+  opacity:0.55;transition:opacity 0.3s;
+  pointer-events:auto;text-decoration:none;
+}
+.sig a:hover{opacity:0.92;}
+.sig svg{width:15px;height:15px;fill:var(--br);flex-shrink:0;transition:fill 0.3s;}
+.sig a:hover svg{fill:var(--goldb);}
+.sig-label{
+  font-family:'Roboto Condensed',sans-serif;font-size:0.7rem;
+  letter-spacing:1.5px;color:var(--br);transition:color 0.3s;
+}
+.sig a:hover .sig-label{color:var(--goldb);}
+.sig.sig-light svg{fill:rgba(221,176,64,0.5);}
+.sig.sig-light .sig-label{color:rgba(221,176,64,0.5);}
+
+/* ══════════════ PERGUNTA DE PROVA ══════════════ */
+.prova{
+  margin-top:auto;padding:0.25rem 0.5rem;
+  background:rgba(107,30,0,0.02);border:1px solid rgba(107,30,0,0.06);
+  border-left:3px solid var(--goldb);border-radius:0 4px 4px 0;
+  max-width:100%;font-size:0.72rem;
+}
+.prova-t{font-family:'Bebas Neue',sans-serif;font-size:0.62rem;letter-spacing:2px;color:var(--goldb);margin-bottom:1px;}
+.prova-q{font-size:0.72rem;color:var(--text);line-height:1.3;margin-bottom:2px;font-weight:600;}
+.prova-o{font-size:0.68rem;color:var(--muted);line-height:1.2;padding:0;}
+.prova-o.correta{color:var(--grn);font-weight:600;}
+.prova-r{font-size:0.6rem;color:var(--grn);font-weight:600;margin-top:1px;}
+
+/* ══════════════ INSTRUCTOR CALLOUTS ══════════════ */
+.callout{
+  padding:0.25rem 0.5rem;border-radius:4px;font-size:0.78rem;line-height:1.35;
+  margin-top:0.3rem;
+}
+.callout-erro{background:rgba(139,16,16,0.05);border-left:3px solid var(--red);color:var(--red);}
+.callout-prova{background:rgba(191,144,32,0.06);border-left:3px solid var(--goldb);color:#8B6000;}
+.callout-pratica{background:rgba(26,85,32,0.05);border-left:3px solid var(--grn);color:var(--grn);}
+.callout strong{font-size:0.72rem;}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ══════════════ NAV ══════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  background:rgba(245,240,232,0.97);
+  border-bottom:3px solid var(--br);
+  height:var(--nav);
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 1rem;
+  box-shadow:0 2px 10px var(--shd);
+  backdrop-filter:blur(8px);
+}
+.nl{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;color:var(--br);white-space:nowrap;}
+.nb{display:flex;gap:0;list-style:none;}
+.nb a{
+  display:flex;align-items:center;
+  padding:0 0.35rem;height:var(--nav);
+  color:var(--muted);text-decoration:none;
+  font-size:0.62rem;letter-spacing:0.8px;text-transform:uppercase;
+  border-right:1px solid var(--bd);white-space:nowrap;
+  transition:background .2s,color .2s;
+}
+.nb a:hover,.nb a.on{background:var(--br);color:#fff;}
+#prog{position:fixed;top:var(--nav);left:0;height:3px;background:var(--goldb);z-index:998;transition:width .3s;}
+
+/* Dots */
+#ctr{position:fixed;bottom:10px;left:50%;transform:translateX(-50%);display:flex;gap:6px;z-index:998;}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--bd);cursor:pointer;transition:all .2s;}
+.dot.on{background:var(--br);transform:scale(1.4);}
+
+/* Setas */
+#prev,#next{
+  position:fixed;top:50%;z-index:998;transform:translateY(-50%);
+  background:rgba(107,30,0,0.10);border:none;
+  width:34px;height:56px;border-radius:4px;cursor:pointer;
+  font-size:1.35rem;color:var(--br);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+#prev{left:4px;}#next{right:4px;}
+#prev:hover,#next:hover{background:rgba(107,30,0,0.22);}
+
+/* ══════════════ DECK / SLIDES ══════════════ */
+#deck{
+  position:fixed;
+  top:var(--nav);left:0;right:0;
+  bottom:0;
+  z-index:1;
+  overflow:hidden;
+}
+
+.slide{
+  position:absolute;
+  inset:0;
+  display:flex;flex-direction:column;
+  padding:0.4rem 0 1.5rem;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.4s ease, transform 0.4s ease;
+  transform:translateY(28px);
+  will-change:transform,opacity;
+  overflow-y:auto; /* SCROLL quando não cabe */
+  overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+}
+.slide.ativo{opacity:1;pointer-events:auto;transform:translateY(0);}
+.slide.saindo{opacity:0;transform:translateY(-28px);pointer-events:none;}
+/* Scrollbar estilizado nos slides */
+.slide::-webkit-scrollbar{width:4px;}
+.slide::-webkit-scrollbar-track{background:transparent;}
+.slide::-webkit-scrollbar-thumb{background:rgba(107,30,0,0.2);border-radius:4px;}
+.slide::-webkit-scrollbar-thumb:hover{background:rgba(107,30,0,0.4);}
+.slide{scrollbar-width:thin;scrollbar-color:rgba(107,30,0,0.2) transparent;}
+
+/* inner: preenche TODA a área disponível */
+.inner{
+  max-width:1440px;margin:0 auto;
+  padding:0 1.8rem;width:100%;
+  flex:1;
+  display:flex;flex-direction:column;
+  min-height:0;
+}
+
+/* Área de conteúdo que se expande */
+.content{
+  flex:1;
+  display:flex;flex-direction:column;
+  min-height:0;
+}
+
+/* ══════════════ CABEÇALHO DE SEÇÃO ══════════════ */
+.stag{font-size:0.92rem;letter-spacing:4px;text-transform:uppercase;color:var(--br);display:block;margin-bottom:0.1rem;}
+.stit{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(1.8rem,3.2vw,2.8rem);
+  line-height:1;color:var(--text);letter-spacing:2px;margin-bottom:0;
+}
+.stit span{color:var(--br);}
+.sdesc{font-size:0.92rem;color:var(--muted);line-height:1.5;margin-top:0.3rem;}
+.sline{width:36px;height:3px;background:var(--br);margin:0.2rem 0 0.4rem;border-radius:2px;}
+
+/* ══════════════ GRIDS ══════════════ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;align-items:stretch;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:0.6rem;}
+
+/* ══════════════ CARDS ══════════════ */
+.c{
+  background:var(--card);border:1px solid var(--bd);border-radius:6px;
+  padding:0.55rem 0.75rem;box-shadow:0 2px 8px var(--shd);
+}
+.ca{border-top:3px solid var(--br);}
+.cg{border-top:3px solid var(--goldb);}
+.cv{border-top:3px solid var(--grn);}
+.cr{border-top:3px solid var(--red);}
+.c h3{
+  font-family:'Roboto Condensed',sans-serif;
+  font-size:0.94rem;text-transform:uppercase;letter-spacing:1.2px;
+  color:var(--br);margin-bottom:0.2rem;
+}
+.c p,.c li{font-size:0.96rem;color:var(--muted);line-height:1.5;}
+.c p strong{color:var(--text);}
+
+/* SVG box */
+.svgb{background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:0.4rem;box-shadow:0 2px 8px var(--shd);overflow:hidden;}
+.svgb svg{width:100%;height:auto;display:block;max-height:40vh;}
+.figc{text-align:center;font-size:0.92rem;letter-spacing:1px;text-transform:uppercase;color:var(--light);margin-top:0.3rem;}
+
+/* Quote */
+.qt{border-left:3px solid var(--br);padding:0.7rem 1rem;background:rgba(107,30,0,0.05);border-radius:0 5px 5px 0;}
+.qt p{font-size:0.96rem;color:var(--bm,#9B3A10);font-style:italic;line-height:1.5;}
+
+/* Geração */
+.gen{
+  display:flex;gap:0.7rem;align-items:flex-start;
+  padding:0.7rem 1rem;
+  background:var(--card);border:1px solid var(--bd);
+  border-left:3px solid var(--br);border-radius:0 5px 5px 0;
+}
+.gn{font-family:'Bebas Neue',sans-serif;font-size:1.65rem;color:var(--br);min-width:28px;line-height:1;}
+.gen h4{font-family:'Roboto Condensed',sans-serif;font-size:0.94rem;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:1px;}
+.gen p{font-size:0.87rem;color:var(--muted);line-height:1.4;}
+
+/* ABC */
+.cls{border-radius:6px;padding:0.6rem;text-align:center;border:2px solid;}
+.cls.perm{border-color:var(--grn);background:rgba(26,85,32,0.05);}
+.cls.rest{border-color:var(--goldb);background:rgba(139,96,0,0.05);}
+.cls.excl{border-color:var(--red);background:rgba(139,16,16,0.05);}
+.clsl{font-family:'Bebas Neue',sans-serif;font-size:2.8rem;line-height:1;margin-bottom:1px;}
+.cls.perm .clsl{color:var(--grn);}
+.cls.rest .clsl{color:var(--goldb);}
+.cls.excl .clsl{color:var(--red);}
+.cls h4{font-family:'Roboto Condensed',sans-serif;font-size:0.92rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
+.cls p{font-size:0.96rem;color:var(--muted);line-height:1.4;}
+
+/* Comp munição */
+.comp{
+  display:flex;gap:0.6rem;align-items:flex-start;
+  padding:0.6rem 0.9rem;
+  background:var(--card);border:1px solid var(--bd);
+  border-left:3px solid var(--goldb);border-radius:0 5px 5px 0;
+}
+.cdot{min-width:7px;height:7px;background:var(--goldb);border-radius:50%;margin-top:6px;flex-shrink:0;}
+.comp h4{font-family:'Roboto Condensed',sans-serif;font-size:0.94rem;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:1px;}
+.comp p{font-size:0.87rem;color:var(--muted);line-height:1.42;}
+
+/* Dogma */
+.dogma{
+  background:var(--card);border:2px solid var(--br);
+  border-radius:6px;padding:0.5rem;text-align:center;
+  box-shadow:0 3px 12px rgba(107,30,0,0.12);
+  display:flex;flex-direction:column;justify-content:center;
+}
+.dog-i{font-size:1.4rem;margin-bottom:1px;}
+.dog-n{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;color:var(--br);letter-spacing:2px;margin-bottom:2px;}
+.dog-t{font-family:'Roboto Condensed',sans-serif;font-size:0.92rem;text-transform:uppercase;letter-spacing:1.2px;color:var(--text);margin-bottom:4px;}
+.dogma p{font-size:0.96rem;color:var(--muted);line-height:1.5;}
+.dogma p strong{color:var(--br);}
+
+/* Seg */
+.seg{background:var(--card);border:1px solid var(--bd);border-radius:6px;padding:0.45rem 0.6rem;box-shadow:0 1px 5px var(--shd);}
+.sgi{font-size:1.05rem;margin-bottom:1px;}
+.seg h4{font-family:'Roboto Condensed',sans-serif;font-size:0.87rem;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:1px;}
+.seg p{font-size:0.92rem;color:var(--muted);line-height:1.42;}
+
+/* Emprego */
+.emp{background:var(--card);border:1px solid var(--bd);border-radius:6px;overflow:hidden;box-shadow:0 2px 8px var(--shd);display:flex;flex-direction:column;}
+.emp-icon{
+  background:linear-gradient(135deg,#4a2010,#7B2D00);
+  display:flex;align-items:center;justify-content:center;
+  padding:0.5rem;
+  font-size:2.5rem;
+  min-height:65px;
+}
+.empb{padding:0.9rem 1.1rem;flex:1;}
+.empb h3{font-family:'Roboto Condensed',sans-serif;font-size:0.96rem;text-transform:uppercase;letter-spacing:1px;color:var(--text);margin-bottom:2px;}
+.empb .empdef{font-size:0.92rem;color:var(--br);font-style:italic;margin-bottom:3px;font-weight:600;}
+.empb p{font-size:0.87rem;color:var(--muted);line-height:1.45;}
+
+/* Modelo */
+.mod{background:var(--card);border:1px solid var(--bd);border-radius:6px;overflow:hidden;box-shadow:0 2px 8px var(--shd);display:flex;flex-direction:column;}
+.mod-img{
+  width:100%;height:140px;object-fit:cover;
+  background:#e8e0d4;display:block;
+  border-bottom:2px solid var(--br);
+}
+.mod-img-wrap{
+  width:100%;height:140px;min-height:60px;
+  background:linear-gradient(135deg,#1a0a00,#3a1800);
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;border-bottom:2px solid var(--br);
+  position:relative;flex-shrink:0;
+}
+.mod-img-wrap img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:contain;
+  filter:brightness(1.05) contrast(1.02);z-index:1;
+}
+.mod-img-wrap .mod-name{
+  font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:#DDB040;
+  letter-spacing:3px;z-index:0;text-align:center;pointer-events:none;
+}
+.mod-img-wrap .mod-fallback{
+  display:none;width:100%;height:100%;flex-direction:column;
+  align-items:center;justify-content:center;z-index:2;
+  background:linear-gradient(135deg,#3a1800,#5a2a00);
+}
+.mod-img-wrap .mod-fallback span:first-child{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#DDB040;letter-spacing:2px;}
+.mod-img-wrap .mod-fallback span:last-child{font-size:0.65rem;color:rgba(255,255,255,.5);}
+.mod-img-wrap .mod-label{
+  position:absolute;bottom:4px;right:6px;
+  font-size:0.55rem;letter-spacing:1px;
+  color:rgba(255,255,255,0.5);
+  font-family:'DM Sans',sans-serif;
+}
+.modb{padding:0.7rem 0.85rem;flex:1;}
+.modb h3{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:2px;color:var(--text);margin-bottom:1px;}
+.modb .modsub{font-size:0.94rem;color:var(--light);margin-bottom:4px;}
+.modb p{font-size:0.92rem;color:var(--muted);line-height:1.42;margin-bottom:3px;}
+.specs{display:flex;flex-direction:column;gap:2px;}
+.spec{display:flex;justify-content:space-between;font-size:0.96rem;padding:1px 0;border-bottom:1px solid #eee;gap:8px;}
+.spec span:first-child{color:var(--muted);white-space:nowrap;}
+.spec span:last-child{color:var(--text);font-weight:600;text-align:right;}
+
+.badge{
+  display:inline-block;
+  background:rgba(107,30,0,0.08);border:1px solid rgba(107,30,0,0.25);
+  color:var(--br);font-size:0.92rem;letter-spacing:1.2px;text-transform:uppercase;
+  padding:1px 6px;border-radius:2px;margin-bottom:3px;
+}
+
+.alerta{
+  background:rgba(139,16,16,0.04);border:1px solid rgba(139,16,16,0.25);
+  border-left:3px solid var(--red);border-radius:0 5px 5px 0;
+  padding:0.65rem 0.9rem;
+}
+.alerta p{font-size:0.87rem;color:#5a0808;line-height:1.55;}
+
+.sep{width:100%;height:1px;background:linear-gradient(to right,var(--br),transparent);opacity:.2;margin:0.3rem 0;}
+
+/* ══════════════ HERO ══════════════ */
+#s0{background:linear-gradient(148deg,#3A1200 0%,#5E2200 50%,#3A1400 100%) !important;}
+#s0 .inner{color:#fff;justify-content:center;align-items:center;text-align:center;position:relative;overflow:hidden;}
+
+/* Muzzle flash animation */
+.hero-flash{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:0;height:0;border-radius:50%;background:radial-gradient(circle,rgba(255,200,60,0.8),rgba(255,120,20,0.4),transparent 70%);
+  animation:flashBoom 0.6s ease-out 1.2s both;pointer-events:none;z-index:0;
+}
+@keyframes flashBoom{
+  0%{width:0;height:0;opacity:1;}
+  30%{width:600px;height:600px;opacity:0.7;}
+  100%{width:1200px;height:1200px;opacity:0;}
+}
+/* Smoke particles */
+.hero-smoke{
+  position:absolute;width:100%;height:100%;top:0;left:0;pointer-events:none;z-index:0;
+}
+.smoke-p{
+  position:absolute;width:8px;height:8px;border-radius:50%;
+  background:rgba(200,180,150,0.15);
+  animation:smokeRise 4s ease-out infinite;
+}
+@keyframes smokeRise{
+  0%{transform:translateY(0) scale(1);opacity:0.3;}
+  100%{transform:translateY(-200px) scale(3);opacity:0;}
+}
+.hbadge{
+  display:inline-flex;flex-direction:column;align-items:center;
+  border:2px solid rgba(200,150,50,.5);border-radius:7px;
+  padding:0.5rem 1.6rem;margin-bottom:0.7rem;
+  background:rgba(200,150,50,.08);
+}
+.hesc{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;letter-spacing:5px;color:#DDB040;}
+.hsub{font-size:0.92rem;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,.5);margin-top:2px;}
+.htag{
+  display:inline-block;border:1px solid rgba(200,150,50,.4);color:#DDB040;
+  font-size:0.92rem;letter-spacing:3px;text-transform:uppercase;
+  padding:3px 14px;border-radius:2px;margin-bottom:0.6rem;
+}
+.htitle{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(3.5rem,10vh,8.5rem);
+  line-height:.88;letter-spacing:4px;color:#fff;margin-bottom:0.25rem;
+}
+.htitle span{color:#DDB040;}
+.hsubt{font-size:0.92rem;color:rgba(255,255,255,.6);letter-spacing:2px;margin-bottom:0.7rem;}
+.haluno{display:flex;align-items:center;justify-content:center;gap:.7rem;margin-bottom:0.7rem;}
+.hanome{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:3px;color:#fff;}
+.hadiv{width:2px;height:22px;background:#DDB040;opacity:.5;}
+.harole{font-size:0.96rem;color:#DDB040;letter-spacing:2px;text-transform:uppercase;}
+.hfontes{
+  display:inline-flex;flex-direction:column;gap:3px;text-align:left;
+  background:rgba(0,0,0,.28);border-radius:7px;
+  padding:.65rem 1rem;border-left:3px solid #DDB040;
+  max-width:660px;width:100%;
+}
+.hft{font-size:0.56rem;letter-spacing:3px;text-transform:uppercase;color:#DDB040;margin-bottom:4px;}
+.hfontes a{
+  font-size:0.82rem;color:rgba(255,255,255,.7);text-decoration:none;
+  display:flex;align-items:baseline;gap:5px;transition:color .2s;
+  white-space:normal;overflow:hidden;text-overflow:ellipsis;
+  line-height:1.3;
+}
+.hfontes a:before{content:' — ';color:#DDB040;flex-shrink:0;}
+.hfontes a:hover{color:#DDB040;}
+
+/* Footer do slide Segurança */
+
+/* ══════════════ VIDEO TV ══════════════ */
+.tv-frame{
+  flex:1;display:flex;align-items:center;justify-content:center;
+  min-height:0;
+}
+.tv{
+  width:90%;max-width:960px;
+  background:#0a0a0a;border-radius:12px;
+  border:4px solid #333;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5), 0 0 80px rgba(107,30,0,0.15);
+  overflow:hidden;position:relative;
+  aspect-ratio:16/9;
+}
+.tv::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.08),transparent);
+  z-index:2;pointer-events:none;
+}
+.tv iframe{width:100%;height:100%;border:none;display:block;}
+.tv-base{
+  display:flex;justify-content:center;margin-top:8px;
+}
+.tv-stand{
+  width:80px;height:6px;background:#333;border-radius:3px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.3);
+}
+.tv-label{
+  text-align:center;margin-top:0.4rem;
+  font-size:0.78rem;color:var(--muted);letter-spacing:1px;
+}
+.tv-label a{color:var(--br);text-decoration:none;}
+
+/* Footer do slide Segurança */
+.seg-footer{
+  background:linear-gradient(135deg,#3A1200,#5E2200);
+  border-radius:8px;
+  padding:0.6rem 1rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:0.5rem;
+  margin-top:0.3rem;
+}
+.seg-footer .sf-nome{font-family:'Bebas Neue',sans-serif;font-size:1.45rem;letter-spacing:3px;color:#DDB040;}
+.seg-footer .sf-role{font-size:0.96rem;color:rgba(255,255,255,.7);letter-spacing:2px;text-transform:uppercase;}
+.seg-footer .sf-curso{font-size:0.96rem;color:#DDB040;letter-spacing:1.5px;font-weight:600;}
+.seg-footer .sf-links{display:flex;flex-direction:column;gap:2px;text-align:right;}
+.seg-footer .sf-links a{font-size:0.92rem;color:rgba(255,255,255,.5);text-decoration:none;}
+.seg-footer .sf-links a:hover{color:#DDB040;}
+
+/* ══════════════ RESPONSIVO ══════════════ */
+
+/* NAV: scrollável em telas estreitas */
+.nb{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.nb::-webkit-scrollbar{display:none;}
+
+/* ══════════════════════════════════════════════════════
+   MOBILE v2 — OTIMIZADO PARA CELULAR VERTICAL
+   Cada slide rola verticalmente. Textos grandes. Imagens grandes.
+   ══════════════════════════════════════════════════════ */
+
+@media(max-width:768px){
+  :root{--nav:42px;--base:clamp(15px,2.8vw,18px);}
+  
+  /* ── SLIDES: scroll vertical livre ── */
+  .slide{
+    padding:0.5rem 0 2.5rem;
+    overflow-y:auto !important;
+    -webkit-overflow-scrolling:touch;
+  }
+  .inner{
+    padding:0 1rem;
+    flex:unset;min-height:unset;
+    overflow:visible;
+  }
+  .content{
+    flex:unset;min-height:unset;
+    overflow:visible;
+  }
+  
+  /* ── TODOS OS GRIDS: COLUNA ÚNICA ── */
+  .g2,.g3,.g4{
+    grid-template-columns:1fr !important;
+    gap:0.8rem !important;
+  }
+  /* Modelos: 2 colunas ainda funciona */
+  .g4{grid-template-columns:repeat(2,1fr) !important;}
+  
+  /* Qualquer grid inline com múltiplas colunas */
+  [style*="grid-template-columns:1fr 1fr 1fr"]{
+    grid-template-columns:1fr !important;
+  }
+  [style*="grid-template-columns:repeat(3"]{
+    grid-template-columns:1fr !important;
+  }
+  [style*="grid-template-columns:1fr 1fr 1fr 1fr"]{
+    grid-template-columns:1fr 1fr !important;
+  }
+  
+  /* ── NAV ── */
+  .nl{font-size:0.9rem;letter-spacing:1px;}
+  .nb{display:none;}
+  #prev,#next{width:30px;height:44px;font-size:1.2rem;border-radius:8px;}
+  #prev{left:4px;}#next{right:4px;}
+  .dot{width:8px;height:8px;}
+  #ctr{bottom:8px;gap:8px;}
+  
+  /* ── TÍTULOS — GRANDES E LEGÍVEIS ── */
+  .stag{font-size:0.82rem;letter-spacing:2px;margin-bottom:0.3rem;}
+  .stit{font-size:clamp(1.4rem,6vw,2rem) !important;margin-bottom:0.3rem;}
+  .sline{margin-bottom:0.4rem;}
+  .sdesc{font-size:0.92rem;margin-bottom:0.5rem;line-height:1.5;}
+  
+  /* ── HERO ── */
+  .htitle{font-size:clamp(2.2rem,12vw,3.5rem) !important;}
+  .htag{font-size:0.72rem;padding:4px 12px;}
+  .hbadge{padding:0.4rem 1rem;}
+  .hesc{font-size:1.1rem;}
+  .hsub{font-size:0.75rem;}
+  .hsubt{font-size:0.85rem;line-height:1.5;}
+  .haluno{flex-direction:column;gap:0.3rem;margin-bottom:0.6rem !important;}
+  .hanome{font-size:clamp(1.5rem,7vw,2.2rem) !important;letter-spacing:4px !important;}
+  .harole{font-size:0.82rem !important;}
+  .hfontes{padding:0.6rem 0.8rem;margin-top:0.5rem;}
+  .hfontes a{font-size:0.72rem;line-height:1.6;}
+  .hft{font-size:0.6rem;margin-bottom:4px;}
+  
+  /* ── CARDS — TEXTO GRANDE ── */
+  .c{
+    padding:0.7rem 0.8rem;
+    border-radius:8px;
+  }
+  .c h3{font-size:0.95rem !important;margin-bottom:4px;}
+  .c p,.c li{font-size:0.88rem !important;line-height:1.55 !important;}
+  
+  /* ── LISTAS GEN ── */
+  .gen{padding:0.6rem 0.8rem;gap:0.5rem;border-radius:8px;}
+  .gen .gn{font-size:1.3rem;min-width:32px;}
+  .gen h4{font-size:0.9rem !important;}
+  .gen p{font-size:0.85rem !important;line-height:1.45 !important;}
+  
+  /* ── COMPONENTES (munição) ── */
+  .comp{padding:0.6rem 0.7rem;border-radius:8px;}
+  .comp h4{font-size:0.9rem;}
+  .comp p{font-size:0.85rem;line-height:1.45;}
+  
+  /* ── DOGMAS ── */
+  .dogma{padding:0.8rem;border-radius:10px;}
+  .dog-i{font-size:1.5rem;}
+  .dog-n{font-size:0.7rem;}
+  .dog-t{font-size:1rem;}
+  .dogma p{font-size:0.88rem;line-height:1.5;}
+  
+  /* ── CLASSIFICAÇÃO A/B/C ── */
+  .clsl{font-size:2.2rem;}
+  .cls h4{font-size:0.88rem;}
+  .cls p{font-size:0.82rem;line-height:1.4;}
+  
+  /* ── EMPREGO ── */
+  .emp{flex-direction:column;}
+  .emp-icon{min-height:44px;padding:0.4rem;font-size:1.4rem;width:100%;border-radius:8px 8px 0 0;}
+  .empb{padding:0.7rem 0.8rem;}
+  .empb h3{font-size:0.95rem;}
+  .empb p{font-size:0.85rem;line-height:1.5;}
+  .badge{font-size:0.72rem;padding:2px 8px;}
+  .empb .empdef{font-size:0.82rem;}
+  
+  /* ── MODELOS ── */
+  .mod-img-wrap,.mod-img{height:130px !important;}
+  .mod-img-wrap .mod-name{font-size:1rem;letter-spacing:2px;}
+  .modb{padding:0.6rem 0.7rem;}
+  .modb h3{font-size:1.1rem;letter-spacing:2px;}
+  .modb .modsub{font-size:0.75rem;margin-bottom:3px;
+    display:block !important;-webkit-line-clamp:unset !important;overflow:visible !important;}
+  .modb p{font-size:0.82rem;line-height:1.45;
+    display:block !important;-webkit-line-clamp:unset !important;overflow:visible !important;}
+  .specs{gap:2px;}
+  .spec{font-size:0.78rem !important;padding:2px 0;}
+  .spec span:first-child{min-width:auto;}
+  
+  /* ── IMAGENS — GRANDES E VISÍVEIS ── */
+  .svgb{margin:0.3rem 0;}
+  .svgb svg{max-height:250px !important;width:100%;}
+  .svgb img{
+    max-height:45vh !important;
+    width:100% !important;
+    height:auto !important;
+    object-fit:contain;
+    border-radius:8px;
+  }
+  .mod-img-wrap img{object-fit:contain;}
+  .figc{font-size:0.72rem;margin-top:0.3rem;}
+  
+  /* Imagens de munição */
+  .mod-img-wrap[style*="height:120px"]{height:150px !important;}
+  .mod-img-wrap[style*="height:110px"]{height:140px !important;}
+  
+  /* ── ALERTAS ── */
+  .alerta{padding:0.6rem 0.8rem;border-radius:8px;}
+  .alerta p{font-size:0.85rem !important;line-height:1.45;}
+  
+  /* ── CALLOUTS DE INSTRUTOR ── */
+  .callout{font-size:0.82rem !important;padding:0.4rem 0.7rem;border-radius:6px;line-height:1.45;}
+  .callout strong{font-size:0.78rem;}
+  
+  /* ── PERGUNTAS — ABAIXO DO CONTEÚDO ── */
+  .prova{
+    padding:0.5rem 0.7rem;
+    margin-top:0.8rem;
+    border-radius:0 8px 8px 0;
+    width:100%;
+    box-sizing:border-box;
+  }
+  .prova-t{font-size:0.68rem;margin-bottom:4px;}
+  .prova-q{font-size:0.82rem;line-height:1.4;margin-bottom:6px;}
+  .prova-o{font-size:0.78rem;line-height:1.35;padding:2px 0;}
+  .prova-r{font-size:0.7rem;margin-top:4px;}
+  
+  /* ── MARCA D'ÁGUA ── */
+  .sig{bottom:10px;right:10px;}
+  .sig svg{width:13px !important;height:13px !important;}
+  .sig-label{font-size:0.6rem !important;letter-spacing:1px;}
+  
+  /* ── LIGHTBOX ── */
+  .lb-fechar{font-size:2rem;top:12px;right:16px;}
+  .lb-legenda{font-size:0.82rem;padding:8px 16px;max-width:90vw;}
+  
+  /* ── TV / VÍDEO ── */
+  .tv-frame{padding:0.5rem;}
+  .tv{max-width:100%;height:auto;min-height:200px;}
+  .tv-label{font-size:0.82rem;padding:0.4rem;}
+  
+  /* ── ENCERRAMENTO ── */
+  .qr-nolight{
+    max-width:220px !important;
+    max-height:220px !important;
+    width:220px !important;
+    height:220px !important;
+  }
+  
+  /* ── WORD WRAP ── */
+  *{word-wrap:break-word;overflow-wrap:break-word;}
+  
+  /* ── ESCONDER dica de rotação ── */
+  .rotate-hint{display:none !important;}
+  
+  /* ── HERO (Início) — centralizado mobile ── */
+  #s0 .inner{
+    justify-content:center !important;
+    align-items:center !important;
+    text-align:center !important;
+    padding:1rem 1.2rem !important;
+    min-height:calc(100vh - var(--nav) - 40px);
+  }
+  #s0 .haluno{
+    align-items:center !important;
+    margin-bottom:1rem !important;
+  }
+  #s0 .hanome{
+    font-size:clamp(1.8rem,9vw,2.8rem) !important;
+    letter-spacing:5px !important;
+  }
+  #s0 .harole{
+    font-size:0.85rem !important;
+    text-align:center;
+  }
+  #s0 .htitle{
+    font-size:clamp(2.5rem,14vw,4rem) !important;
+    margin-bottom:0.3rem;
+  }
+  #s0 .hsubt{
+    font-size:0.9rem !important;
+    margin-bottom:0.8rem;
+  }
+  #s0 .hfontes{
+    text-align:left;
+    max-width:100%;
+  }
+  
+  /* ── FIM (Encerramento) — centralizado mobile ── */
+  #s12 .inner{
+    justify-content:center !important;
+    align-items:center !important;
+    text-align:center !important;
+    padding:1rem 1.2rem !important;
+    min-height:calc(100vh - var(--nav) - 40px);
+  }
+  #s12 .inner > div{
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    gap:0.6rem;width:100%;
+  }
+  
+  /* ── INLINE STYLES override ── */
+  [style*="font-size:0.72rem"]{font-size:0.82rem !important;}
+  [style*="font-size:0.68rem"]{font-size:0.78rem !important;}
+  [style*="font-size:0.65rem"]{font-size:0.78rem !important;}
+  [style*="font-size:0.78rem"]{font-size:0.85rem !important;}
+  
+  /* Peças: numeros */
+  [style*="font-size:2rem"][style*="rgba(107,30,0"]{
+    font-size:2.5rem !important;
+    color:rgba(107,30,0,0.3) !important;
+  }
+}
+
+/* ══════════════════════════════════════
+   TELAS MUITO PEQUENAS (≤400px)
+   ══════════════════════════════════════ */
+@media(max-width:400px){
+  :root{--nav:38px;}
+  .inner{padding:0 0.6rem;}
+  .stit{font-size:clamp(1.2rem,6vw,1.6rem) !important;}
+  .htitle{font-size:clamp(1.8rem,11vw,2.8rem) !important;}
+  .c p,.c li{font-size:0.82rem !important;}
+  .g4{grid-template-columns:1fr !important;}
+  .qr-nolight{
+    max-width:180px !important;max-height:180px !important;
+    width:180px !important;height:180px !important;
+  }
+}
+
+/* ── Landscape mobile (altura curta) ── */
+@media(max-height:500px){
+  :root{--nav:34px;}
+  .slide{padding:0.2rem 0 1.5rem;}
+  .stag{font-size:0.68rem;}
+  .stit{font-size:clamp(1rem,3vw,1.4rem) !important;}
+  .g2,.g3{gap:0.3rem !important;}
+  .c{padding:0.3rem 0.5rem;}
+  .c h3{font-size:0.72rem !important;}
+  .c p{font-size:0.68rem !important;}
+  .htitle{font-size:clamp(1.5rem,5vh,2.5rem) !important;}
+}
+
+@media(max-width:768px) and (max-height:500px){
+  .g2,.g3{grid-template-columns:1fr 1fr !important;gap:0.3rem !important;}
+  .g4{grid-template-columns:repeat(2,1fr) !important;gap:0.3rem !important;}
+}
+
+
+
+
+/* ══════════════ 16:9 FIT & OVERFLOW FIX ══════════════ */
+.slide{overflow-y:auto !important;}
+.content{min-height:0 !important;flex-shrink:1;}
+.inner{overflow:visible;}
+.g2,.g3,.g4{min-height:0;}
+
+/* QR Code — prevent lightbox */
+.qr-nolight{pointer-events:none;}
+.qr-nolight+*{pointer-events:auto;}
+a:has(.qr-nolight){pointer-events:auto !important;}
+.qr-nolight{pointer-events:auto !important;}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<!-- ASSINATURA -->
+<div class="sig">
+  <a href="https://www.instagram.com/ricardo_taira/" target="_blank" title="@ricardo_taira" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:inherit;">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+    <span class="sig-label">@ricardo_taira</span>
+  </a>
+</div>
+
+<nav>
+  <div class="nl">ESPINGARDA CAL.12</div>
+  <ul class="nb" id="navb"></ul>
+</nav>
+<div id="prog"></div>
+<button id="prev" onclick="mover(-1)">&#8249;</button>
+<button id="next" onclick="mover(1)">&#8250;</button>
+<div id="ctr"></div>
+
+<div id="deck">
+
+<!-- ══════ S0 — HERO ══════ -->
+<section class="slide" id="s0" data-titulo="Início">
+<div class="inner" style="justify-content:center;">
+  <div class="hero-flash"></div>
+  <div class="hero-smoke" id="heroSmoke"></div>
+  <div class="haluno ha1" style="flex-direction:column;gap:0.15rem;margin-bottom:0.4rem;">
+    <span class="hanome" style="font-size:clamp(2rem,5vw,3.2rem);letter-spacing:6px;">RICARDO TAIRA</span>
+    <span class="harole" style="font-size:clamp(0.78rem,1.5vw,1.05rem);">IAT — Instrutor de Armamento e Tiro</span>
+    <span class="harole" style="font-size:clamp(0.6rem,1.2vw,0.82rem);opacity:0.6;">Formado pela Escola de Formação de Armamento e Tiro Combat Tático</span>
+  </div>
+  <h1 class="htitle ha2">ESPIN<span>GARDA</span><br>CAL. 12</h1>
+  <p class="hsubt ha3">Nomenclatura · Funcionamento · Tipos de Emprego</p>
+  <div class="hfontes ha4">
+    <div class="hft">📚 Fontes e Referências</div>
+    <a href="https://www.gov.br/pf/pt-br/assuntos/armas/instrutores-de-armamento-e-tiro/orientacao-para-credenciamento/sintese-de-temas-para-avaliacao-de-capacidade-tecnica-30-12-2020.pdf" target="_blank">Cartilha PF — CONAT/DIREX/PF · Síntese de Temas (2020)</a>
+    <a href="https://www.planalto.gov.br/ccivil_03/decreto/D3665.htm" target="_blank">Decreto nº 3.665/2000 (R-105) · Regulamento de Fiscalização de Produtos Controlados</a>
+    <a href="https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2019/decreto/D9847.htm" target="_blank">Decreto nº 9.847/2019 · Regulamento do Estatuto do Desarmamento</a>
+    <a href="https://www.planalto.gov.br/ccivil_03/leis/2003/l10.826.htm" target="_blank">Lei nº 10.826/2003 · Estatuto do Desarmamento</a>
+    <a href="https://www.gov.br/pf/pt-br/assuntos/armas" target="_blank">Portal Armas de Fogo · Polícia Federal · gov.br/pf/armas</a>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S1 — O QUE É ══════ -->
+<section class="slide" id="s1" data-titulo="O que é">
+<div class="inner">
+  <div class="stag">01 — Definição</div>
+  <h2 class="stit">O QUE É UMA <span>ESPINGARDA?</span></h2>
+  <div class="sline"></div>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;gap:0.5rem;min-height:0;">
+        <div class="svgb" style="min-height:0;display:flex;flex-direction:column;">
+          <img src="https://i.imgur.com/JgocZli.png" alt="Espingarda Pump Cal.12" style="width:100%;height:auto;object-fit:contain;border-radius:4px;max-height:22vh;">
+          <p class="figc" style="margin-top:0.2rem;">Espingarda Pump Cal.12 — Nomenclatura das Peças</p>
+        </div>
+        <div class="c cg" style="padding:0.35rem 0.6rem;">
+          <h3>📜 As 5 Gerações da Espingarda</h3>
+        </div>
+        <div class="gen" style="padding:0.35rem 0.6rem;"><div class="gn">1ª</div><div><h4>Alavanca (Lever Action)</h4><p>Recarrega por alavanca. Ex: Winchester 1897.</p></div></div>
+        <div class="gen" style="padding:0.35rem 0.6rem;"><div class="gn">2ª</div><div><h4>Pump (a mais comum no Brasil)</h4><p>Bombear a telha pra recarregar. Ex: Remington 870, Mossberg 590, CBC 586.</p></div></div>
+        <div class="gen" style="padding:0.35rem 0.6rem;"><div class="gn">3ª</div><div><h4>Semiautomática (sistema a gás)</h4><p>Recarrega sozinha com a energia do disparo. Ex: Benelli M4.</p></div></div>
+        <div class="gen" style="padding:0.35rem 0.6rem;"><div class="gn">4ª</div><div><h4>Pump + Semi Combinadas</h4><p>Opera nos dois modos. Ex: Benelli M3 Super 90.</p></div></div>
+        <div class="gen" style="padding:0.35rem 0.6rem;"><div class="gn">5ª</div><div><h4>Automática — Uso Militar</h4><p>Rajada contínua. Raras, destinadas ao uso militar. Ex: AA-12.</p></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.4rem;min-height:0;overflow:hidden;">
+        <div class="c ca" style="padding:0.4rem 0.65rem;">
+          <h3>📖 Definição</h3>
+          <p>"Arma de fogo portátil, de <strong>cano longo e geralmente de alma lisa</strong>, destinada ao disparo de cartuchos com múltiplos projéteis (balins) ou projétil único (balote/slug)." — <strong>Decreto 3.665/2000</strong></p>
+        </div>
+        <div class="c" style="padding:0.4rem 0.65rem;">
+          <h3>📅 Origem</h3>
+          <p>As armas portáteis de pólvora surgiram entre os <strong>séculos XV e XVII</strong>, evoluindo até as espingardas modernas. No Brasil, usada pela PM, Exército e civis CAC (Colecionador, Atirador e Caçador).</p>
+        </div>
+        <div class="c cv" style="padding:0.4rem 0.65rem;">
+          <h3 style="color:var(--grn);">✓ Alma Lisa — A mais comum</h3>
+          <p>O interior do cano é <strong>liso, sem raiamento</strong>. Lança múltiplos balins (bolinhas de chumbo) de uma vez.<br>
+          <strong>Usada em:</strong> caça · tiro esportivo (trap/skeet — tiro ao prato) · defesa residencial · uso policial.</p>
+        </div>
+        <div class="c ca" style="padding:0.4rem 0.65rem;">
+          <h3>〰 Alma Raiada — Menos comum</h3>
+          <p>O cano possui <strong>ranhuras internas (raias)</strong> que fazem o projétil girar, aumentando estabilidade e precisão. Usada para disparar <strong>slug/balote (projétil único)</strong>.<br>
+          <strong>Uso:</strong> caça de animais maiores · tiros mais precisos com espingarda.<br>
+          <strong>Exemplos:</strong> Remington 870 SPS (versão slug/balote com cano raiado) · Mossberg 500 Slugster.</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="prova">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">Qual a principal diferença funcional entre uma espingarda de alma lisa e uma de alma raiada?</div>
+      <div class="prova-o"><strong>A)</strong> A alma lisa possui ranhuras helicoidais para estabilizar o projétil único.</div>
+      <div class="prova-o"><strong>B)</strong> A alma raiada é projetada para disparar múltiplos projéteis simultaneamente.</div>
+      <div class="prova-o correta"><strong>C)</strong> A alma lisa possui interior sem raiamento, projetada para disparar cartuchos com múltiplos projéteis (balins) ou projétil único (slug/balote).</div>
+      <div class="prova-o"><strong>D)</strong> Não há diferença funcional — ambas disparam os mesmos tipos de munição.</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa C</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S2 — TIPO B ══════ -->
+<section class="slide" id="s2" data-titulo="Tipo B">
+<div class="inner">
+  <div class="stag">02 — Classificação Legal</div>
+  <h2 class="stit">POR QUE <span>"TIPO B"?</span></h2>
+  <div class="sline"></div>
+  <p class="sdesc">No Brasil, a legislação classifica armas de fogo principalmente como de <strong>uso permitido</strong> ou de <strong>uso restrito</strong>. A classificação A, B e C abaixo é uma simplificação didática.</p>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="c cr" style="border-left:4px solid var(--red);">
+          <h3 style="color:var(--red);font-size:0.95rem;">🔴 TIPO A — USO RESTRITO</h3>
+          <p><strong>O que significa:</strong> Armas de uso exclusivo de policiais e forças de segurança pública. Cidadão civil <strong>não pode possuir</strong>.</p>
+          <p style="margin-top:4px;font-size:0.85rem;color:var(--muted);"><strong>Critérios:</strong> Cano curto (menor que 24") · Capacidade de cartuchos aumentada além do padrão de fábrica · Acessórios militares (coronha rebatível tática, trilhos, etc.) · Qualquer modificação que altere a configuração civil.</p>
+        </div>
+        <div class="c cv" style="border-left:4px solid var(--grn);border-width:2px;box-shadow:0 2px 10px rgba(26,85,32,.12);">
+          <h3 style="color:var(--grn);font-size:0.95rem;">🟢 TIPO B — USO PERMITIDO ★</h3>
+          <p><strong>O que significa:</strong> Cidadão civil <strong>pode adquirir e registrar</strong> cumprindo os requisitos legais. A espingarda cal.12 padrão se encaixa aqui.</p>
+          <p style="margin-top:4px;font-size:0.85rem;color:var(--muted);"><strong>Critérios:</strong> Cano longo (≥ 24") · Capacidade original de fábrica · Configuração civil padrão sem modificações restritas · Requer capacitação técnica, idoneidade e residência fixa.</p>
+        </div>
+        <div class="c" style="border-left:4px solid var(--goldb);">
+          <h3 style="color:var(--goldb);font-size:0.95rem;">🟡 TIPO C — USO EXCLUSIVO FORÇAS ARMADAS</h3>
+          <p><strong>O que significa:</strong> Armas de uso <strong>exclusivo do Exército, Marinha e Aeronáutica</strong>. Nem policiais, nem civis.</p>
+          <p style="margin-top:4px;font-size:0.85rem;color:var(--muted);"><strong>Critérios:</strong> Espingardas automáticas (disparo em rajada contínua) · Configurações exclusivamente militares · Armamentos de guerra.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="c ca">
+          <h3>🔑 A Espingarda Cal.12 é Tipo B</h3>
+          <p>Conforme o <strong>Decreto nº 9.847/2019</strong>, a espingarda cal.12 em configuração civil padrão (cano ≥ 24", capacidade original de fábrica) é de <strong>Uso Permitido</strong>. O cidadão pode adquirir e registrar.</p>
+        </div>
+        <div class="alerta" style="padding:0.7rem 0.8rem;border-width:3px;border-left:5px solid var(--red);background:rgba(139,16,16,.08);">
+          <p style="font-size:0.95rem;"><strong>⚠️ ATENÇÃO — ALTERAÇÕES QUE MUDAM A CLASSIFICAÇÃO:</strong></p>
+          <p style="margin-top:5px;font-size:0.88rem;">As seguintes modificações podem <strong>alterar a classificação de Tipo B (permitido) para Tipo A (restrito)</strong>, tornando a posse <strong>ilegal para civis</strong>:</p>
+          <p style="margin-top:5px;font-size:0.88rem;">
+          ● <strong>Encurtar o cano</strong> para menos de 24"<br>
+          ● <strong>Aumentar a capacidade</strong> do tubo de depósito além do original de fábrica<br>
+          ● Instalar <strong>coronha rebatível</strong> ou dobrável de uso tático<br>
+          ● Adicionar <strong>acessórios exclusivos de forças de segurança</strong></p>
+          <p style="margin-top:5px;font-size:0.85rem;color:var(--red);"><strong>Sempre consulte a legislação vigente antes de qualquer modificação.</strong></p>
+          <div class="callout callout-prova" style="margin-top:4px;"><strong>🎯 ATENÇÃO EM PROVA:</strong> A classificação A, B e C é didática. A legislação oficial utiliza "uso permitido" e "uso restrito" conforme o Decreto 3.665/2000 (R-105).</div>
+        </div>
+        <div class="c cg">
+          <h3>🏛️ Base Legal</h3>
+          <p>Lei 10.826/2003 (Estatuto do Desarmamento) + Decreto 9.847/2019 + Decreto 3.665/2000 (R-105).</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="prova">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">Qual modificação pode reclassificar uma espingarda de Uso Permitido (Tipo B) para Uso Restrito (Tipo A)?</div>
+      <div class="prova-o"><strong>A)</strong> Substituição da coronha de madeira por polímero.</div>
+      <div class="prova-o correta"><strong>B)</strong> Redução do comprimento do cano para menos de 24 polegadas.</div>
+      <div class="prova-o"><strong>C)</strong> Instalação de bandoleira (porta-fuzil).</div>
+      <div class="prova-o"><strong>D)</strong> Aplicação de acabamento superficial (pintura, oxidação).</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa B</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S3 — PEÇAS I ══════ -->
+<section class="slide" id="s3" data-titulo="Peças I">
+<div class="inner">
+  <div class="stag">03 — Anatomia · Parte I</div>
+  <h2 class="stit">NOMEN<span>CLATURA</span> — PEÇAS 01 A 05</h2>
+  <div class="sline"></div>
+  <p class="sdesc">Nomes conforme a <strong>Cartilha da Polícia Federal</strong>. Nomes populares ou técnicos corretos entre parênteses.</p>
+  <div class="content">
+    <div class="svgb" style="margin-bottom:0.4rem;">
+      <img src="https://i.imgur.com/JgocZli.png" alt="Espingarda Pump Cal.12" style="width:100%;height:auto;object-fit:contain;border-radius:4px;max-height:28vh;">
+      <p class="figc">Imagem conforme Cartilha PF — alguns nomes podem diferir da nomenclatura técnica</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">01</span><h3>Soleira (amortecedor de recuo)</h3><p>Borracha na ponta da coronha. <strong>Absorve o recuo</strong> e evita que a arma escorregue do ombro.</p></div>
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">02</span><h3>Coronha (apoio do ombro)</h3><p>Parte de madeira ou polímero que encosta no ombro. <strong>Estabiliza a arma</strong> na hora do tiro. <em style="font-size:0.82rem;color:var(--muted);">Obs: na imagem da Cartilha PF o nome aparece diferente, mas o correto é <strong>coronha</strong>.</em></p></div>
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">03</span><h3>Caixa de Culatra (receptáculo / carcaça)</h3><p>O "corpo" central da arma — também chamado de <strong>receiver</strong> (receptor). <strong>Abriga todo o mecanismo interno</strong>: ferrolho, percussor, gatilho e sistema de alimentação.</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;margin-top:0.6rem;">
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">04</span><h3>Gatilho (peça de acionamento do disparo)</h3><p><strong>Aciona o disparo.</strong> O dedo indicador só entra no guarda-mato quando estiver pronto para atirar.</p></div>
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">05</span><h3>Abertura de Ejeção (janela de ejeção)</h3><p>Abertura lateral por onde o <strong>cartucho usado é expulso</strong> após o tiro. Também permite inspeção visual da câmara.</p></div>
+    </div>
+  
+    <div class="prova">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">Qual é a função da soleira (amortecedor de recuo) na espingarda?</div>
+      <div class="prova-o"><strong>A)</strong> Proteger a mão do atirador contra o aquecimento do cano.</div>
+      <div class="prova-o correta"><strong>B)</strong> Absorver parte da energia de recuo e estabilizar o encaixe no ombro do atirador.</div>
+      <div class="prova-o"><strong>C)</strong> Facilitar o acionamento da trava de segurança durante o manuseio.</div>
+      <div class="prova-o"><strong>D)</strong> Direcionar os gases propelentes para fora do receptáculo.</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa B</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S4 — PEÇAS II ══════ -->
+<section class="slide" id="s4" data-titulo="Peças II">
+<div class="inner">
+  <div class="stag">03 — Anatomia · Parte II</div>
+  <h2 class="stit">NOMEN<span>CLATURA</span> — PEÇAS 06 A 10</h2>
+  <div class="sline"></div>
+  <div class="content">
+    <div class="svgb" style="margin-bottom:0.4rem;">
+      <img src="https://i.imgur.com/JgocZli.png" alt="Espingarda Pump Cal.12" style="width:100%;height:auto;object-fit:contain;border-radius:4px;max-height:28vh;">
+      <p class="figc">Imagem conforme Cartilha PF — alguns nomes podem diferir da nomenclatura técnica</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.6rem;">
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">06</span><h3>Abertura do Carregador (abertura de alimentação)</h3><p>Entrada por onde se <strong>insere os cartuchos</strong> no tubo de depósito. Fica na parte inferior da arma.</p></div>
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">07</span><h3>Carregador de Munição (tubo de depósito)</h3><p>Tubo abaixo do cano. <strong>Armazena os cartuchos</strong> antes do disparo. Capacidade varia conforme o modelo.</p></div>
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">08</span><h3>Cano (condutor do projétil)</h3><p><strong>Alma lisa (sem raiamento)</strong> — interior completamente liso. Comprimento varia de 14" a 28". Canos mais longos proporcionam maior velocidade ao projétil e melhor controle do padrão de dispersão.</p></div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:0.6rem;margin-top:0.6rem;">
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">09</span><h3>Telha (guarda-mão / pump)</h3><p>A parte que o atirador <strong>desliza pra frente e pra trás</strong> para recarregar. É o componente que caracteriza o sistema pump (ação de repetição manual). Protege a mão do calor do cano.</p></div>
+      <div class="c ca" style="position:relative;overflow:hidden;"><span style="position:absolute;top:1px;right:5px;font-family:'Bebas Neue',sans-serif;font-size:2rem;color:rgba(107,30,0,.35);">10</span><h3>Alça de Mira (dispositivo de visada posterior)</h3><p>Peça traseira de visada. Você alinha ela com a <strong>massa de mira</strong> (pino na frente do cano) e o alvo para fazer a pontaria.</p></div>
+    </div>
+  
+    <div class="prova">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">A telha (guarda-mão) da espingarda pump possui dupla função operacional. Quais são elas?</div>
+      <div class="prova-o correta"><strong>A)</strong> Proteger a mão do calor do cano e acionar o mecanismo de repetição manual (ciclo pump).</div>
+      <div class="prova-o"><strong>B)</strong> Servir como mira auxiliar e travar o ferrolho na posição fechada.</div>
+      <div class="prova-o"><strong>C)</strong> Proteger o cano de impactos externos e armazenar cartuchos reserva.</div>
+      <div class="prova-o"><strong>D)</strong> Regular a pressão dos gases e direcionar a ejeção do estojo.</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa A</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S4B — CALIBRE 12 ══════ -->
+<section class="slide" id="s4b" data-titulo="Calibre 12">
+<div class="inner">
+  <div class="stag">03 — Conceito Fundamental</div>
+  <h2 class="stit">POR QUE <span>"CALIBRE 12"?</span></h2>
+  <div class="sline"></div>
+  <p class="sdesc">O número do calibre indica o diâmetro interno do cano, seguindo o sistema de medição chamado <strong>gauge</strong>, popularmente referido como calibre.</p>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;gap:0.6rem;">
+        <div class="c ca">
+          <h3>🔢 Como funciona o sistema Gauge?</h3>
+          <p>O número <strong>12</strong> no nome "calibre 12" não se refere diretamente ao tamanho do cano, mas sim ao seu <strong>diâmetro interno</strong>, seguindo o sistema de medição chamado <em>gauge</em>, popularmente referido como calibre.</p>
+          <p style="margin-top:6px;">Funciona da seguinte forma: a partir de <strong>1 libra de chumbo</strong> (aproximadamente 453g), são produzidas esferas com o mesmo diâmetro interno do cano da arma.</p>
+          <p style="margin-top:6px;">Se forem necessárias <strong>12 esferas</strong> para atingir esse peso — o calibre é <strong>12</strong>.<br>
+          Se forem necessárias <strong>20 esferas</strong> — o calibre é <strong>20</strong>.<br>
+          Se forem necessárias <strong>28 esferas</strong> — o calibre é <strong>28</strong>.</p>
+          <p style="margin-top:6px;">Como no calibre 12 são necessárias <strong>menos esferas</strong> para completar 1 libra, cada esfera possui <strong>maior diâmetro</strong>.</p>
+        </div>
+        <div class="c cg">
+          <h3>💡 Resumo</h3>
+          <p>Quanto <strong>menor o número</strong> do calibre no sistema gauge, <strong>maior será o diâmetro interno do cano</strong> — e consequentemente, maior o poder de fogo.</p>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.4rem;">
+          <div class="c" style="border-left:4px solid var(--br);text-align:center;padding:0.4rem;">
+            <h3 style="font-size:1rem;color:var(--br);margin-bottom:1px;">CAL. 12</h3>
+            <p style="font-size:0.92rem;"><strong>18,5 mm</strong></p>
+            <p style="font-size:0.72rem;color:var(--muted);">12 esferas = 1 libra</p>
+          </div>
+          <div class="c" style="border-left:4px solid var(--goldb);text-align:center;padding:0.4rem;">
+            <h3 style="font-size:1rem;color:var(--goldb);margin-bottom:1px;">CAL. 20</h3>
+            <p style="font-size:0.92rem;"><strong>15,6 mm</strong></p>
+            <p style="font-size:0.72rem;color:var(--muted);">20 esferas = 1 libra</p>
+          </div>
+          <div class="c" style="border-left:4px solid var(--light);text-align:center;padding:0.4rem;">
+            <h3 style="font-size:1rem;color:var(--light);margin-bottom:1px;">CAL. 28</h3>
+            <p style="font-size:0.92rem;"><strong>14,0 mm</strong></p>
+            <p style="font-size:0.72rem;color:var(--muted);">28 esferas = 1 libra</p>
+          </div>
+        </div>
+        <div class="c cv">
+          <h3 style="color:var(--grn);">📌 Por que o Calibre 12 é o mais utilizado?</h3>
+          <p>Oferece o melhor equilíbrio entre <strong>versatilidade, disponibilidade e custo</strong>. Padrão das PMs, forças táticas e civis CAC. Aceita desde cartuchos menos letais até munição de alto poder de parada.</p>
+        </div>
+        <div class="c ca" style="padding:0.35rem 0.5rem;">
+          <h3 style="font-size:0.82rem;">⚡ Fatores que influenciam o desempenho</h3>
+          <p style="font-size:0.78rem;"><strong>Carga do cartucho:</strong> mais pólvora e projéteis mais pesados geram maior energia. Cargas leves (esportivas) = menos recuo. Cargas pesadas (táticas) = maior poder de parada.</p>
+          <p style="font-size:0.78rem;margin-top:2px;"><strong>Comprimento do cano:</strong> canos mais longos resultam em maior velocidade de saída. Após deixar o cano, o projétil <strong>apenas perde velocidade</strong>.</p>
+          <p style="font-size:0.78rem;margin-top:2px;"><strong>Tipo de munição:</strong> birdshot, buckshot e slug/balote possuem características balísticas completamente diferentes.</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="prova">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">No sistema gauge, o que significa afirmar que uma espingarda é "calibre 12"?</div>
+      <div class="prova-o"><strong>A)</strong> O cano possui exatamente 12 milímetros de diâmetro interno.</div>
+      <div class="prova-o correta"><strong>B)</strong> São necessárias 12 esferas de chumbo, com diâmetro igual ao interno do cano, para totalizar 1 libra (453g).</div>
+      <div class="prova-o"><strong>C)</strong> O cartucho padrão contém exatamente 12 projéteis (balins).</div>
+      <div class="prova-o"><strong>D)</strong> A arma possui capacidade máxima de 12 cartuchos no tubo de depósito.</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa B</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S5 — MUNIÇÃO I ══════ -->
+<section class="slide" id="s5" data-titulo="Munição I">
+<div class="inner">
+  <div class="stag">04 — Cartuchos · Parte I</div>
+  <h2 class="stit">A MUNI<span>ÇÃO</span> — COMPONENTES DO CARTUCHO</h2>
+  <div class="sline"></div>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;align-items:stretch;gap:0.4rem;min-height:0;">
+        <div class="svgb" style="width:100%;flex:1;min-height:0;display:flex;align-items:center;justify-content:center;">
+          <svg viewBox="-80 30 480 360" xmlns="http://www.w3.org/2000/svg" style="max-height:100%;width:100%;">
+            <rect width="340" height="380" fill="#FEFCFA"/>
+            <rect x="88" y="44" width="148" height="264" rx="9" fill="#b83030" stroke="#d04040" stroke-width="2"/>
+            <rect x="88" y="44" width="34" height="264" rx="9" fill="rgba(255,255,255,0.07)"/>
+            <path d="M88 54 Q102 42 116 52 Q130 62 144 52 Q158 42 172 52 Q186 62 200 52 Q214 42 228 52 Q236 44 236 54 L236 62 Q222 48 208 58 Q194 68 180 58 Q166 48 152 58 Q138 68 124 58 Q110 48 96 58 Q88 50 88 62 Z" fill="#d04040"/>
+            <rect x="90" y="234" width="144" height="52" rx="4" fill="#201e10"/>
+            <text x="162" y="266" font-size="12" fill="#7a7040" text-anchor="middle" font-family="DM Sans" font-weight="700">PÓLVORA</text>
+            <rect x="90" y="162" width="144" height="74" rx="4" fill="#3a5068"/>
+            <text x="162" y="202" font-size="14" fill="#90aac0" text-anchor="middle" font-family="DM Sans" font-weight="700">BUCHA</text>
+            <g fill="#909294" stroke="#c0c2c4" stroke-width="1">
+              <circle cx="112" cy="143" r="15"/><circle cx="148" cy="135" r="15"/><circle cx="184" cy="143" r="15"/>
+              <circle cx="206" cy="134" r="12"/><circle cx="122" cy="112" r="14"/><circle cx="158" cy="106" r="14"/>
+              <circle cx="192" cy="110" r="12"/><circle cx="110" cy="84" r="11"/><circle cx="144" cy="78" r="11"/><circle cx="178" cy="83" r="11"/>
+            </g>
+            <rect x="76" y="286" width="172" height="42" rx="5" fill="#b08030"/>
+            <rect x="76" y="286" width="172" height="11" rx="5" fill="#d0a040"/>
+            <rect x="64" y="308" width="196" height="22" rx="5" fill="#909294"/>
+            <rect x="64" y="308" width="196" height="7" rx="5" fill="#b4b6b8"/>
+            <circle cx="162" cy="320" r="17" fill="#C89820"/>
+            <circle cx="162" cy="320" r="10" fill="#E0B030"/>
+            <circle cx="162" cy="320" r="4" fill="#B08010"/>
+            <!-- Labels -->
+            <line x1="88" y1="114" x2="28" y2="114" stroke="#6B1E00" stroke-width="1.5" stroke-dasharray="4 3"/><text x="25" y="110" font-size="11" fill="#6B1E00" text-anchor="end" font-family="DM Sans" font-weight="700">① Balins</text><text x="25" y="124" font-size="9" fill="#6B1E00" text-anchor="end" font-family="DM Sans">(bolinhas de chumbo)</text>
+            <line x1="88" y1="200" x2="28" y2="200" stroke="#555" stroke-width="1.5" stroke-dasharray="4 3"/><text x="25" y="198" font-size="11" fill="#555" text-anchor="end" font-family="DM Sans">④ Bucha</text><text x="25" y="212" font-size="9" fill="#555" text-anchor="end" font-family="DM Sans">(separador plástico)</text>
+            <line x1="88" y1="260" x2="28" y2="260" stroke="#555" stroke-width="1.5" stroke-dasharray="4 3"/><text x="25" y="258" font-size="11" fill="#555" text-anchor="end" font-family="DM Sans">③ Pólvora</text><text x="25" y="272" font-size="9" fill="#555" text-anchor="end" font-family="DM Sans">(propelente)</text>
+            <line x1="88" y1="297" x2="28" y2="297" stroke="#555" stroke-width="1.5" stroke-dasharray="4 3"/><text x="25" y="302" font-size="11" fill="#555" text-anchor="end" font-family="DM Sans">② Estojo</text>
+            <line x1="88" y1="320" x2="28" y2="320" stroke="#6B1E00" stroke-width="1.5" stroke-dasharray="4 3"/><text x="25" y="325" font-size="11" fill="#6B1E00" text-anchor="end" font-family="DM Sans" font-weight="700">⑤ Espoleta</text>
+            <line x1="236" y1="120" x2="290" y2="120" stroke="#6B1E00" stroke-width="1.5" stroke-dasharray="4 3"/><text x="295" y="118" font-size="11" fill="#6B1E00" font-family="DM Sans" font-weight="700">Projéteis</text><text x="295" y="132" font-size="9" fill="#6B1E00" font-family="DM Sans">(bolinhas de chumbo)</text>
+            <line x1="236" y1="56" x2="290" y2="44" stroke="#555" stroke-width="1.5" stroke-dasharray="4 3"/><text x="295" y="42" font-size="11" fill="#555" font-family="DM Sans">Fecho (tampa)</text>
+            <line x1="236" y1="200" x2="290" y2="200" stroke="#555" stroke-width="1.5" stroke-dasharray="4 3"/><text x="295" y="198" font-size="11" fill="#555" font-family="DM Sans">Estojo (invólucro</text><text x="295" y="212" font-size="9" fill="#555" font-family="DM Sans">de plástico)</text>
+            <text x="162" y="362" font-size="12" fill="#6B1E00" text-anchor="middle" font-family="Bebas Neue" letter-spacing="2">CARTUCHO CAL.12 — CORTE</text>
+          </svg>
+        </div>
+        <p class="figc">Corte transversal · Cartucho calibre 12 · Buckshot</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.6rem;">
+        <div class="c ca"><h3>📦 Os 5 Componentes do Cartucho (munição)</h3></div>
+        <div class="comp"><div class="cdot"></div><div><h4>① Balins — Projéteis (bolinhas de chumbo)</h4><p><strong>Balins</strong> = múltiplas bolinhas de metal, para curta distância. <strong>Slug/Balote</strong> = projétil único pesado, maior alcance.</p></div></div>
+        <div class="comp"><div class="cdot"></div><div><h4>② Estojo (invólucro externo)</h4><p>Invólucro de plástico com base metálica (culote). <strong>Acondiciona todos os componentes</strong> e assegura a vedação (obturação) na câmara.</p></div></div>
+        <div class="comp"><div class="cdot"></div><div><h4>③ Propelente — Pólvora</h4><p>A combustão controlada do propelente gera <strong>rápida expansão de gases</strong>, que impulsiona os projéteis através do cano. A quantidade de pólvora determina a <strong>energia cinética</strong> transferida ao projétil — cargas maiores resultam em maior velocidade de saída.</p></div></div>
+        <div class="comp"><div class="cdot"></div><div><h4>④ Bucha (separador plástico)</h4><p>Fica entre a pólvora e os balins (bolinhas de chumbo). <strong>Sela os gases</strong> e mantém os balins juntos dentro do cano até saírem.</p></div></div>
+        <div class="comp"><div class="cdot"></div><div><h4>⑤ Espoleta (o iniciador)</h4><p>O percussor (pino de disparo) golpeia a espoleta — inicia a combustão da pólvora. <strong>Sem ela, nada acontece.</strong></p></div></div>
+        <div class="callout callout-prova"><strong>🎯 ATENÇÃO EM PROVA:</strong> O projétil atinge sua velocidade máxima dentro do cano. Após deixar a boca do cano, o projétil <strong>apenas perde velocidade</strong> por resistência do ar e gravidade.</div>
+      </div>
+    </div>
+  
+    <div class="prova">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">Qual componente do cartucho é responsável por iniciar a combustão do propelente (pólvora)?</div>
+      <div class="prova-o"><strong>A)</strong> Bucha (separador plástico).</div>
+      <div class="prova-o"><strong>B)</strong> Estojo (invólucro externo).</div>
+      <div class="prova-o correta"><strong>C)</strong> Espoleta (iniciador).</div>
+      <div class="prova-o"><strong>D)</strong> Fecho (tampa superior do estojo).</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa C</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S6 — MUNIÇÃO II ══════ -->
+<section class="slide" id="s6" data-titulo="Munição II">
+<div class="inner">
+  <div class="stag">04 — Cartuchos · Parte II</div>
+  <h2 class="stit">MUNI<span>ÇÃO</span> — TIPOS E CHOKE (ESTRANGULAMENTO)</h2>
+  <div class="sline"></div>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <!-- ESQUERDA: TIPOS DE MUNIÇÃO -->
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="g3" style="gap:0.5rem;">
+          <div class="c ca" style="text-align:center;">
+            <div class="mod-img-wrap" style="height:120px;border-bottom:none;border-radius:6px;background:#f5f0e8;">
+              <img src="https://i.imgur.com/1miKrwk.png" alt="Balins — bolinhas de chumbo" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+            </div>
+            <h3 style="margin-top:4px;">Balins (bolinhas de chumbo)</h3>
+            <p style="font-size:0.82rem;">Múltiplas esferas de chumbo dentro do cartucho. Eficaz até <strong>~25m</strong> (birdshot/pequenos) ou <strong>~35-40m</strong> (buckshot/grandes).</p>
+          </div>
+          <div class="c ca" style="text-align:center;">
+            <div class="mod-img-wrap" style="height:120px;border-bottom:none;border-radius:6px;background:#f5f0e8;">
+              <img src="https://i.imgur.com/xuWJfxO.png" alt="Slug/Balote — projétil único" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+            </div>
+            <h3 style="margin-top:4px;">Slug/Balote (projétil único)</h3>
+            <p style="font-size:0.82rem;">Um único projétil pesado. Vai mais longe e penetra mais. Eficaz até <strong>~70-100m</strong>. Caça grande e defesa.</p>
+          </div>
+          <div class="c ca" style="text-align:center;">
+            <div class="mod-img-wrap" style="height:120px;border-bottom:none;border-radius:6px;background:#f5f0e8;">
+              <img src="https://i.imgur.com/AG4X3rP.png" alt="Bean Bag — saquinho de areia" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;">
+            </div>
+            <h3 style="margin-top:4px;">Bean Bag (saquinho de areia)</h3>
+            <p style="font-size:0.82rem;">Munição menos letal. Imobiliza sem perfurar. Usado por polícia em controle de distúrbios.</p>
+          </div>
+        </div>
+        <div class="c cg">
+          <h3>📏 Como funciona a numeração dos balins?</h3>
+          <p>A numeração dos balins (bolinhas de chumbo) funciona <strong>ao contrário</strong> do que parece:</p>
+          <p style="margin-top:3px;"><strong>Número MENOR (ex: 00, 0, 1)</strong> = esfera <strong>MAIOR</strong> = mais potência por bolinha = menos bolinhas no cartucho. Usado em <strong>defesa e policial</strong>.</p>
+          <p style="margin-top:3px;"><strong>Número MAIOR (ex: 7, 8, 9)</strong> = esfera <strong>MENOR</strong> = menos potência por bolinha = mais bolinhas no cartucho. Usado em <strong>caça de aves e esporte</strong>.</p>
+        </div>
+        <div class="callout callout-pratica"><strong>💡 NA PRÁTICA:</strong> Carga leve (esportiva) = menos recuo, ideal para treino e competição. Carga pesada (tática/caça) = mais energia, maior poder de parada, mais recuo.</div>
+        <div class="callout callout-erro"><strong>⚠️ ERRO COMUM:</strong> Acreditar que espingarda dispensa pontaria. Em distâncias curtas o espalhamento é pequeno — visada correta é obrigatória.</div>
+        <div class="prova">
+          <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+          <div class="prova-q">Qual é o efeito prático de utilizar um choke do tipo Full (total) em uma espingarda?</div>
+          <div class="prova-o"><strong>A)</strong> Aumenta a velocidade de saída do projétil e reduz o recuo percebido.</div>
+          <div class="prova-o correta"><strong>B)</strong> Concentra o padrão de dispersão dos balins, aumentando o alcance efetivo.</div>
+          <div class="prova-o"><strong>C)</strong> Reduz o peso total da arma e facilita o manuseio em espaços confinados.</div>
+          <div class="prova-o"><strong>D)</strong> Permite o uso exclusivo de munição tipo Magnum (câmara 76mm).</div>
+          <div class="prova-r">✓ Resposta correta: Alternativa B</div>
+        </div>
+      </div>
+      <!-- DIREITA: CHOKE -->
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="c ca">
+          <h3>🔩 Choke — Estrangulamento do Cano</h3>
+          <p>O choke é uma peça na ponta do cano que <strong>controla o quanto os balins se espalham</strong> após o disparo. Quanto mais apertado o choke, menos os balins se espalham — o tiro fica mais concentrado e alcança mais longe.</p>
+        </div>
+        <div class="svgb">
+          <img src="https://i.imgur.com/Qo3cHeR.jpg" alt="Tipos de Choke — Estrangulamento do cano" style="width:100%;height:auto;object-fit:contain;border-radius:6px;max-height:22vh;">
+          <p class="figc" style="margin-top:0.2rem;">Tipos de choke (estrangulamento) e seus efeitos na dispersão</p>
+        </div>
+        <div class="c cg" style="padding:0.4rem 0.6rem;">
+          <h3>Tipos de Choke — Comparativo Técnico</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:3px;margin-top:4px;font-size:0.72rem;">
+            <div style="background:rgba(26,85,32,0.08);padding:3px 5px;border-radius:3px;text-align:center;"><strong style="color:var(--grn);">Cylinder</strong><br>Sem restrição<br>Máxima dispersão<br><em>Defesa / CQB</em></div>
+            <div style="background:rgba(191,144,32,0.08);padding:3px 5px;border-radius:3px;text-align:center;"><strong style="color:#8B6000;">Imp. Cylinder</strong><br>Leve restrição<br>Dispersão moderada<br><em>Uso geral / Skeet</em></div>
+            <div style="background:rgba(107,30,0,0.06);padding:3px 5px;border-radius:3px;text-align:center;"><strong style="color:var(--br);">Modified</strong><br>Média restrição<br>Equilíbrio<br><em>Caça / Trap</em></div>
+            <div style="background:rgba(139,16,16,0.06);padding:3px 5px;border-radius:3px;text-align:center;"><strong style="color:var(--red);">Full</strong><br>Máxima restrição<br>Mínima dispersão<br><em>Longo alcance</em></div>
+          </div>
+          <div class="callout callout-pratica" style="margin-top:4px;"><strong>💡 NA PRÁTICA:</strong> O choke deve ser escolhido conforme o emprego. Defesa residencial usa Cylinder (máximo espalhamento em curta distância). Caça de aves usa Modified ou Full (concentração para maior alcance).</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S6B — VÍDEO FUNCIONAMENTO ══════ -->
+<section class="slide" id="s6b" data-titulo="Vídeo">
+<div class="inner">
+  <div class="stag">04 — Demonstração Visual</div>
+  <h2 class="stit">FUNCIONA<span>MENTO</span> — VÍDEO DEMONSTRATIVO</h2>
+  <div class="sline"></div>
+  <div class="tv-frame">
+    <div style="display:flex;flex-direction:column;align-items:center;width:100%;">
+      <div class="tv">
+        <video src="https://preview.redd.it/w42btf3754py.gif?width=700&format=mp4&s=11bcffa3f0964fab0c38ba9ab408c38475320603" autoplay loop muted playsinline style="width:100%;height:100%;object-fit:contain;background:#000;"></video>
+      </div>
+      <div class="tv-base"><div class="tv-stand"></div></div>
+      <div class="tv-label">
+        Funcionamento interno da espingarda pump · Animação em loop automático
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S7 — EMPREGO ══════ -->
+<section class="slide" id="s7" data-titulo="Emprego">
+<div class="inner">
+  <div class="stag">05 — Aplicações</div>
+  <h2 class="stit">TIPOS DE <span>EMPREGO</span></h2>
+  <div class="sline"></div>
+  <p class="sdesc">"Emprego" é a finalidade específica para a qual a espingarda é usada. Define munição, configuração e legislação aplicável.</p>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <div class="emp">
+        <div class="emp-icon" style="background:linear-gradient(135deg,#282418,#3a3428);">🏠</div>
+        <div class="empb">
+          <div class="badge">Defesa Pessoal</div>
+          <h3>Defesa</h3>
+          <p>Utilizada para proteção pessoal e residencial, com elevado poder de parada em curtas distâncias.<br>
+          <strong>Cano:</strong> curto, geralmente entre 14" e 20"<br>
+          <strong>Munição:</strong> buckshot (balins maiores) e slug/balote (projétil único)<br>
+          <strong>Exemplo:</strong> CBC Military 3.0, CBC Pump Action 586</p>
+        </div>
+      </div>
+      <div class="emp">
+        <div class="emp-icon" style="background:linear-gradient(135deg,#1a3a12,#224818);">🌲</div>
+        <div class="empb">
+          <div class="badge">Cinegético</div>
+          <h3>Caça</h3>
+          <p>Empregada na atividade cinegética para abate de espécies autorizadas, em conformidade com a legislação ambiental vigente.<br>
+          <strong>Cano:</strong> médio a longo, entre 24" e 28"<br>
+          <strong>Munição:</strong> birdshot (balins pequenos), podendo variar conforme a caça<br>
+          <strong>Exemplo:</strong> CBC Pump Action 586, Boito Miura I<br>
+          <em style="font-size:0.82rem;color:var(--muted);">Obs: exige autorização dos órgãos ambientais (IBAMA) e cumprimento das normas para caça legal.</em></p>
+        </div>
+      </div>
+      <div class="emp">
+        <div class="emp-icon" style="background:linear-gradient(135deg,#302060,#4a3080);">🎯</div>
+        <div class="empb">
+          <div class="badge">Esportivo · CAC</div>
+          <h3>Esportivo</h3>
+          <p>Utilizada em práticas de tiro esportivo, como trap (tiro ao prato), skeet (tiro ao prato lateral) e sporting (percurso de caça), com foco em precisão e repetição.<br>
+          <strong>Cano:</strong> longo, geralmente entre 26" e 30"<br>
+          <strong>Munição:</strong> birdshot (balins pequenos)<br>
+          <strong>Exemplo:</strong> Boito Miura II, CBC 7122</p>
+        </div>
+      </div>
+      <div class="emp">
+        <div class="emp-icon" style="background:linear-gradient(135deg,#1e3050,#2a4070);">🚔</div>
+        <div class="empb">
+          <div class="badge">Institucional</div>
+          <h3>Uso Institucional</h3>
+          <p>Emprego por forças de segurança em operações táticas e controle de distúrbios.<br>
+          <strong>Cano:</strong> curto a médio, entre 14" e 18"<br>
+          <strong>Munição:</strong> letal (buckshot e slug/balote) e menos letal (borracha, bean bag (saquinho de areia), gás)<br>
+          <strong>Exemplo:</strong> CBC Military 3.0, CBC Pump Action 586</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="prova">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">Para emprego em defesa residencial, qual configuração de espingarda é tecnicamente mais adequada?</div>
+      <div class="prova-o"><strong>A)</strong> Cano longo (28") com choke Full e munição birdshot (balins pequenos).</div>
+      <div class="prova-o correta"><strong>B)</strong> Cano curto (14" a 20") com munição buckshot (balins grandes) ou slug/balote.</div>
+      <div class="prova-o"><strong>C)</strong> Cano longo (30") sem choke e munição menos letal (borracha).</div>
+      <div class="prova-o"><strong>D)</strong> Qualquer configuração é igualmente eficaz, pois a espingarda dispensa pontaria precisa.</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa B</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S8 — MODELOS ══════ -->
+<section class="slide" id="s8" data-titulo="Modelos">
+<div class="inner">
+  <div class="stag">06 — Referências Mais Usadas no Brasil</div>
+  <h2 class="stit">MODELOS <span>CLÁSSICOS</span></h2>
+  <div class="sline"></div>
+  <p class="sdesc">Os modelos mais utilizados no Brasil — da Polícia Militar ao atirador civil CAC.</p>
+  <div class="content">
+    <div class="g4" style="flex:1;min-height:0;">
+
+      <div class="mod">
+        <div class="mod-img-wrap">
+          <span class="mod-name">REMINGTON 870</span>
+          <img src="https://i.imgur.com/tcq5eZm.jpeg" alt="Remington 870" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="mod-fallback"><span>REMINGTON 870</span><span style="font-size:0.75rem;color:rgba(255,255,255,.5);">Busque a imagem no Google</span></div>
+          
+        </div>
+        <div class="modb">
+          <div class="badge">⭐ A mais usada no Brasil</div>
+          <h3>Remington 870</h3>
+          <div class="modsub">Pump · Presente em PMs de todo o Brasil · Foto: variante Marine Magnum (resistente à maresia)</div>
+          <p>A espingarda pump mais utilizada pela Polícia Militar brasileira. Muito usada por atiradores CAC. Extremamente confiável. A trava de segurança fica <strong>atrás do guarda-mato</strong>.</p>
+          <p style="font-size:0.72rem;color:var(--light);margin-top:2px;font-style:italic;">Fonte: Cartilha PF/CONAT 2020 · Remington Arms Company</p>
+          <div class="specs">
+            <div class="spec"><span>Ação</span><span>Pump</span></div>
+            <div class="spec"><span>Calibre</span><span>12 GA (70/76mm)</span></div>
+            <div class="spec"><span>Trava de Segurança</span><span>Atrás do guarda-mato (cruzeta)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod-img-wrap">
+          <span class="mod-name">MOSSBERG 590A1</span>
+          <img src="https://i.imgur.com/hcYOnUd.png" alt="Mossberg 590A1" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="mod-fallback"><span>MOSSBERG 590A1</span><span style="font-size:0.75rem;color:rgba(255,255,255,.5);">Busque a imagem no Google</span></div>
+          
+        </div>
+        <div class="modb">
+          <div class="badge">🪖 Popular entre CAC no Brasil</div>
+          <h3>Mossberg 590A1</h3>
+          <div class="modsub">Pump · Seguro no topo (polegar) · MIL-SPEC (padrão militar)</div>
+          <p>A trava de segurança fica <strong>no topo do receptáculo</strong>, acionado pelo polegar — diferente da Remington, onde a trava fica atrás do gatilho. Isso facilita o manuseio para destros e canhotos. Construção robusta MIL-SPEC (aprovada em testes militares). Popular entre CAC no Brasil.</p>
+          <p style="font-size:0.72rem;color:var(--light);margin-top:2px;font-style:italic;">Fonte: Mossberg & Sons Inc. · U.S. Military MIL-SPEC 3443E</p>
+          <div class="specs">
+            <div class="spec"><span>Ação</span><span>Pump</span></div>
+            <div class="spec"><span>Calibre</span><span>12 GA</span></div>
+            <div class="spec"><span>Trava de Segurança</span><span>No topo (polegar) — ambidestro</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod-img-wrap">
+          <span class="mod-name">BENELLI M4</span>
+          <img src="https://i.imgur.com/q4nc2Hh.png" alt="Benelli M4 Super 90" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="mod-fallback"><span>BENELLI M4</span><span style="font-size:0.75rem;color:rgba(255,255,255,.5);">Busque a imagem no Google</span></div>
+          
+        </div>
+        <div class="modb">
+          <div class="badge">🇮🇹 Usada por forças especiais BR</div>
+          <h3>Benelli M4</h3>
+          <div class="modsub">Semiautomática · Sistema ARGO (gás automático) · Foto: variante T-Pro</div>
+          <p>Usada por forças especiais brasileiras (BOPE, COT). Semiautomática — o gás do disparo recarrega sozinha, sem precisar bombear. Referência premium no Brasil.</p>
+          <p style="font-size:0.72rem;color:var(--light);margin-top:2px;font-style:italic;">Fonte: Benelli Armi S.p.A. · Catálogos BOPE/COT/PMDF</p>
+          <div class="specs">
+            <div class="spec"><span>Ação</span><span>Semiautomática (gás)</span></div>
+            <div class="spec"><span>Calibre</span><span>12 GA</span></div>
+            <div class="spec"><span>Trava de Segurança</span><span>Atrás do guarda-mato (cruzeta)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mod">
+        <div class="mod-img-wrap" style="background:#2a1800;">
+          <span class="mod-name">🇧🇷 CBC 586</span>
+          <img src="https://i.imgur.com/RaGwsU1.png" alt="CBC 586" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <div class="mod-fallback"><span style="font-size:2rem;">🇧🇷</span><span>CBC 586</span><span style="font-size:0.75rem;color:rgba(255,255,255,.5);">FABRICADA NO BRASIL</span></div>
+          
+        </div>
+        <div class="modb">
+          <div class="badge">🇧🇷 100% Brasileira</div>
+          <h3>CBC 586</h3>
+          <div class="modsub">Pump · CBC · Ribeirão Pires, SP</div>
+          <p>Fabricada pela CBC em Ribeirão Pires/SP. A espingarda <strong>mais usada</strong> por PMs e atiradores CAC no Brasil. Nacional e acessível.</p>
+          <p style="font-size:0.72rem;color:var(--light);margin-top:2px;font-style:italic;">Fonte: Companhia Brasileira de Cartuchos (CBC) · Catálogos PMs estaduais</p>
+          <div class="specs">
+            <div class="spec"><span>Ação</span><span>Pump</span></div>
+            <div class="spec"><span>Fabricante</span><span>CBC · Ribeirão Pires/SP</span></div>
+            <div class="spec"><span>Trava de Segurança</span><span>Atrás do guarda-mato (cruzeta)</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  
+    <div class="prova">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">Qual é a principal diferença no posicionamento da trava de segurança entre a Remington 870 e a Mossberg 590A1?</div>
+      <div class="prova-o"><strong>A)</strong> A Remington possui trava no topo do receptáculo; a Mossberg, atrás do guarda-mato.</div>
+      <div class="prova-o correta"><strong>B)</strong> A Mossberg possui trava no topo do receptáculo (acionada pelo polegar, ambidestra); a Remington, atrás do guarda-mato (cruzeta).</div>
+      <div class="prova-o"><strong>C)</strong> Ambas possuem trava no mesmo local, diferindo apenas no formato do acionador.</div>
+      <div class="prova-o"><strong>D)</strong> A Remington não possui trava de segurança; utiliza apenas o sistema de meia-armação.</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa B</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S9 — MANUTENÇÃO E LIMPEZA ══════ -->
+<section class="slide" id="s9" data-titulo="Manutenção">
+<div class="inner">
+  <div class="stag">08 — Conservação da Arma</div>
+  <h2 class="stit">MANUTEN<span>ÇÃO</span> E LIMPEZA</h2>
+  <div class="sline"></div>
+  <p class="sdesc">Uma espingarda bem mantida é uma espingarda confiável. Limpeza e inspeção regulares previnem falhas e acidentes.</p>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <!-- COLUNA ESQUERDA: Desmontagem de Campo -->
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="c cv" style="padding:0.4rem 0.6rem;">
+          <h3 style="color:var(--grn);">🔧 Desmontagem Básica de Campo (Pump)</h3>
+          <p style="font-size:0.85rem;color:var(--muted);margin-bottom:3px;">Procedimento para limpeza — <strong>sempre com arma descarregada e verificada</strong>:</p>
+        </div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">1</div><div><h4>Verificar e Descarregar</h4><p>Retirar todos os cartuchos. Abrir a ação. Verificar câmara e tubo de depósito <strong>visualmente e pelo tato</strong>. Confirmar: vazia.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">2</div><div><h4>Remover o Cano</h4><p>Desrosquear a porca do tubo de depósito (na ponta). Puxar o cano para frente e retirar. Separar.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">3</div><div><h4>Remover Telha e Ferrolho</h4><p>Com o cano removido, puxar a telha para frente até soltar. O ferrolho sai junto ou separado, dependendo do modelo.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">4</div><div><h4>Limpar Cada Peça</h4><p>Passar solvente no cano (vareta + escova). Limpar receptáculo com pano. Limpar ferrolho e extrator. Secar tudo.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">5</div><div><h4>Lubrificar e Remontar</h4><p>Aplicar óleo fino nos trilhos do ferrolho, hastes da corrediça e articulações. Remontar na ordem inversa. Testar a ação.</p></div></div>
+        <div class="prova">
+          <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+          <div class="prova-q">Na desmontagem de 1º escalão de uma espingarda pump, qual a sequência correta?</div>
+          <div class="prova-o"><strong>A)</strong> Remover ferrolho, retirar cano, soltar telha.</div>
+          <div class="prova-o correta"><strong>B)</strong> Descarregar, remover porca do tubo, retirar cano, puxar telha, retirar ferrolho.</div>
+          <div class="prova-o"><strong>C)</strong> Retirar telha, soltar gatilho, remover cano.</div>
+          <div class="prova-o"><strong>D)</strong> Descarregar, retirar ferrolho, remover cano, soltar telha.</div>
+          <div class="prova-r">✓ Resposta: Alternativa B</div>
+        </div>
+      </div>
+      <!-- COLUNA DIREITA: Quando e Como -->
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="c ca">
+          <h3>📅 Quando Limpar?</h3>
+          <p><strong>Sempre após o uso</strong> (mesmo poucos disparos). A cada 30 dias se guardada sem uso. Após exposição a chuva, umidade ou poeira. Antes de qualquer prova ou treinamento.</p>
+        </div>
+        <div class="c cg">
+          <h3>🧴 Kit Básico de Limpeza</h3>
+          <p><strong>Vareta de limpeza</strong> (alumínio ou carbono) · <strong>Escovas</strong> (bronze para solvente, nylon para acabamento) · <strong>Solvente</strong> (Hoppe's, Break-Free) · <strong>Óleo lubrificante</strong> (fino, para armas) · <strong>Panos de algodão</strong> (patches) · <strong>Escova de dentes</strong> velha (para cantos).</p>
+        </div>
+        <div class="c cr">
+          <h3 style="color:var(--red);">⚠️ O Que NÃO Fazer</h3>
+          <p><strong>Nunca</strong> usar WD-40 (atrai sujeira). <strong>Nunca</strong> lubrificar em excesso (acumula resíduo). <strong>Nunca</strong> limpar com a arma carregada. <strong>Nunca</strong> usar objetos metálicos duros no cano (risca a alma).</p>
+        </div>
+        <div class="c">
+          <h3>🔍 Inspeção Visual Pós-Limpeza</h3>
+          <p>Verificar: cano livre de obstruções (olhar contra a luz), ferrolho deslizando suavemente, extrator firme, seguro funcionando (S/F), molas com tensão adequada, coronha sem rachaduras.</p>
+        </div>
+        <div class="alerta">
+          <p>⚠️ <strong>Cartilha PF:</strong> A manutenção preventiva é responsabilidade do proprietário. Arma mal conservada pode falhar no momento crítico e causar acidentes graves.</p>
+          <div class="callout callout-pratica" style="margin-top:3px;"><strong>💡 NA PRÁTICA:</strong> Após cada sessão de tiro, limpeza básica do cano e inspeção visual. Manutenção completa a cada 500 disparos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S10 — TRANSPORTE ══════ -->
+<section class="slide" id="s10" data-titulo="Transporte">
+<div class="inner">
+  <div class="stag">09 — Aspectos Legais · Parte I</div>
+  <h2 class="stit">TRANS<span>PORTE</span> LEGAL</h2>
+  <div class="sline"></div>
+  <p class="sdesc">O descumprimento das regras de transporte pode configurar crime — Lei 10.826/2003 (Estatuto do Desarmamento).</p>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="c cv" style="padding:0.5rem 0.7rem;">
+          <h3 style="color:var(--grn);">🚗 Regras Obrigatórias para Transporte</h3>
+          <p style="font-size:0.85rem;color:var(--muted);">Conforme Decreto 9.847/2019 — o proprietário deve cumprir TODAS as regras abaixo:</p>
+        </div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">✓</div><div><h4>Desmuniciada</h4><p>A arma deve estar <strong>completamente descarregada</strong> — câmara vazia, tubo de depósito vazio. Sem exceção.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">✓</div><div><h4>Em Estojo Apropriado</h4><p>Dentro de <strong>caixa, estojo ou bolsa fechada</strong>, própria para transporte de arma. Não pode estar visível ou acessível.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">✓</div><div><h4>Munição Separada</h4><p>Os cartuchos devem ser transportados <strong>em recipiente separado</strong> da arma. Não no mesmo estojo.</p></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="gen"><div class="gn" style="color:var(--grn);">✓</div><div><h4>Documentação Obrigatória</h4><p>Levar: <strong>Certificado de Registro (CR) ou CRAF</strong> + documento de identidade com foto. Deve estar válido e atualizado.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">✓</div><div><h4>Trajeto Direto</h4><p>O transporte deve ser <strong>da residência ao estande ou local autorizado</strong> e volta. Sem paradas desnecessárias ou desvios de rota.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--goldb);">GT</div><div><h4>Guia de Tráfego (GT)</h4><p>Obrigatória para <strong>transporte interestadual</strong> ou quando exigida pela PF/Exército. Emitida pelo SFPC/SisCont. Tem validade definida e trajeto específico. Sem ela, o transporte entre estados é <strong>ilegal</strong>.</p></div></div>
+        <div class="c cg">
+          <h3>💡 Dica Prática</h3>
+          <p>Antes de sair de casa: verifique se a arma está descarregada, coloque no estojo, munição em bolsa separada, confira CR/CRAF e identidade no bolso. Na dúvida, <strong>não transporte</strong>.</p>
+          <div class="callout callout-erro" style="margin-top:3px;"><strong>⚠️ ERRO COMUM:</strong> Transportar a arma dentro de mochila comum ou bolsa não específica. O estojo deve ser próprio para arma de fogo, fechado e que impeça o acesso direto.</div>
+        </div>
+      </div>
+    </div>
+    <div class="alerta" style="padding:0.7rem 1rem;border-width:3px;border-left:5px solid var(--red);background:rgba(139,16,16,.08);margin-top:0.5rem;">
+      <p style="font-size:0.95rem;text-align:center;"><strong>⚠️ TRANSPORTE IRREGULAR DE ARMA = CRIME</strong></p>
+      <p style="font-size:0.9rem;text-align:center;margin-top:3px;">Art. 14 da Lei 10.826/2003 (Estatuto do Desarmamento). <strong>Pena: 2 a 4 anos de reclusão + multa.</strong></p>
+    </div>
+    <div class="prova" style="margin-top:0.8rem;">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">Conforme a Lei 10.826/2003, qual é a pena prevista para transporte irregular de arma de fogo?</div>
+      <div class="prova-o"><strong>A)</strong> Multa administrativa de R$ 5.000,00.</div>
+      <div class="prova-o"><strong>B)</strong> Detenção de 6 meses a 1 ano.</div>
+      <div class="prova-o correta"><strong>C)</strong> Reclusão de 2 a 4 anos e multa.</div>
+      <div class="prova-o"><strong>D)</strong> Advertência verbal e apreensão temporária da arma.</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa C</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S10B — ARMAZENAMENTO ══════ -->
+<section class="slide" id="s10b" data-titulo="Armazenamento">
+<div class="inner">
+  <div class="stag">09 — Aspectos Legais · Parte II</div>
+  <h2 class="stit">ARMAZE<span>NAMENTO</span> LEGAL</h2>
+  <div class="sline"></div>
+  <p class="sdesc">O proprietário é responsável pela guarda segura da arma. A omissão de cautela é crime previsto no Estatuto do Desarmamento.</p>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="c ca" style="padding:0.5rem 0.7rem;">
+          <h3>🔒 Regras de Armazenamento em Casa</h3>
+          <p style="font-size:0.85rem;color:var(--muted);">Obrigações do proprietário para guarda residencial:</p>
+        </div>
+        <div class="gen"><div class="gn">1</div><div><h4>Cofre ou Local com Chave</h4><p>A arma deve ficar em <strong>cofre, armário de aço ou local trancado</strong> com acesso restrito ao proprietário. O cofre deve ser fixado na parede ou piso quando possível.</p></div></div>
+        <div class="gen"><div class="gn">2</div><div><h4>Arma Descarregada</h4><p>Guardar <strong>sempre desmuniciada</strong>. Câmara e tubo de depósito vazios. Seguro (trava) ativado.</p></div></div>
+        <div class="gen"><div class="gn">3</div><div><h4>Munição Separada</h4><p>Cartuchos em <strong>local diferente</strong> da arma. Idealmente em outro cofre ou compartimento trancado.</p></div></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;">
+        <div class="gen"><div class="gn">4</div><div><h4>Fora do Alcance de Menores</h4><p>Crianças e adolescentes <strong>não podem ter acesso</strong> em nenhuma circunstância. A responsabilidade é exclusiva do proprietário.</p></div></div>
+        <div class="gen"><div class="gn">5</div><div><h4>Ambiente Adequado</h4><p>Local <strong>seco e ventilado</strong>. Umidade causa oxidação (ferrugem) nas peças metálicas. Evitar locais com grande variação de temperatura.</p></div></div>
+        <div class="gen"><div class="gn">6</div><div><h4>Registro de Acesso</h4><p>Somente o proprietário registrado deve ter acesso à chave ou segredo do cofre. <strong>Nunca</strong> compartilhe a combinação com terceiros.</p></div></div>
+        <div class="c cg">
+          <h3>💡 Resumo</h3>
+          <p>Cofre trancado + arma descarregada + munição separada + longe de crianças + ambiente seco = <strong>armazenamento correto</strong>.</p>
+        </div>
+      </div>
+    </div>
+    <div class="alerta" style="padding:0.7rem 1rem;border-width:3px;border-left:5px solid var(--red);background:rgba(139,16,16,.08);margin-top:0.5rem;">
+      <p style="font-size:0.95rem;text-align:center;"><strong>⚠️ OMISSÃO DE CAUTELA NA GUARDA = CRIME</strong></p>
+      <p style="font-size:0.9rem;text-align:center;margin-top:3px;">Art. 13 do Estatuto do Desarmamento — se outra pessoa (inclusive menor) acessar a arma por negligência do proprietário. <strong>Pena: 1 a 3 anos de detenção + multa.</strong></p>
+    </div>
+    <div class="prova" style="margin-top:0.8rem;">
+      <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+      <div class="prova-q">Conforme o Art. 13 do Estatuto do Desarmamento, o que configura o crime de omissão de cautela na guarda de arma de fogo?</div>
+      <div class="prova-o"><strong>A)</strong> Armazenar a arma em cofre sem fixação na parede.</div>
+      <div class="prova-o correta"><strong>B)</strong> Permitir o acesso de pessoa não autorizada (inclusive menor) à arma, por negligência do proprietário.</div>
+      <div class="prova-o"><strong>C)</strong> Guardar arma e munição no mesmo cômodo da residência.</div>
+      <div class="prova-o"><strong>D)</strong> Não realizar manutenção preventiva a cada 6 meses.</div>
+      <div class="prova-r">✓ Resposta correta: Alternativa B</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S11 — SEGURANÇA ══════ -->
+<section class="slide" id="s11" data-titulo="Segurança">
+<div class="inner">
+  <div class="stag">10 — Segurança e Fundamentos</div>
+  <h2 class="stit">SEGURANÇA <span>E FUNDAMENTOS DO TIRO</span></h2>
+  <div class="sline"></div>
+  <div class="content">
+    <div class="g2" style="flex:1;min-height:0;">
+      <!-- COLUNA ESQUERDA: Dogmas + Regras + Pergunta -->
+      <div style="display:flex;flex-direction:column;gap:0.5rem;justify-content:center;">
+        <div class="dogma" style="padding:0.6rem;">
+          <div class="dog-i">🔫</div>
+          <div class="dog-n">DOGMA 1 — PF</div>
+          <div class="dog-t">Controle do Cano</div>
+          <p>Cano <strong>sempre para direção segura</strong> — manuseio, inspeção, limpeza, transporte. <strong>Sem exceção.</strong></p>
+          <div class="callout callout-erro"><strong>⚠️ ERRO COMUM:</strong> Apontar o cano para cima ou para o chão durante inspeção. A direção segura é aquela onde, em caso de disparo acidental, não haja risco para ninguém.</div>
+        </div>
+        <div class="dogma" style="padding:0.6rem;">
+          <div class="dog-i">☝️</div>
+          <div class="dog-n">DOGMA 2 — PF</div>
+          <div class="dog-t">Dedo Fora do Gatilho</div>
+          <p>Dedo <strong>fora do guarda-mato</strong>, só entra quando pronto para atirar. Dois descumpridos = <strong>risco de morte.</strong></p>
+        </div>
+        <div class="c ca">
+          <h3>⚠️ 4 Regras de Segurança</h3>
+          <p><strong>1.</strong> Trate toda arma como carregada — sem exceção.<br>
+          <strong>2.</strong> Nunca aponte para algo que não pretende destruir.<br>
+          <strong>3.</strong> Conheça o alvo e o que está atrás dele.<br>
+          <strong>4.</strong> Trava de segurança pode falhar — nunca substitui as regras.</p>
+        </div>
+        <div class="prova">
+          <div class="prova-t">📝 Pergunta de Prova (PF / IAT)</div>
+          <div class="prova-q">Segundo os dogmas de segurança da PF, quais são as duas regras invioláveis?</div>
+          <div class="prova-o"><strong>A)</strong> Usar protetor auricular e óculos de proteção.</div>
+          <div class="prova-o correta"><strong>B)</strong> Controle permanente da direção do cano e dedo fora do gatilho até o momento do disparo.</div>
+          <div class="prova-o"><strong>C)</strong> Verificar a arma antes e depois de cada uso e limpar o cano após cada sessão.</div>
+          <div class="prova-o"><strong>D)</strong> Manter a arma sempre travada e nunca transportar munição junto.</div>
+          <div class="prova-r">✓ Resposta correta: Alternativa B</div>
+        </div>
+      </div>
+      <!-- COLUNA DIREITA: Fundamentos do Tiro -->
+      <div style="display:flex;flex-direction:column;gap:0.45rem;justify-content:center;">
+        <div class="c cv" style="padding:0.4rem 0.6rem;">
+          <h3 style="color:var(--grn);">🎯 6 Fundamentos do Tiro com Espingarda</h3>
+          <p style="font-size:0.88rem;color:var(--muted);">Os fundamentos que todo atirador deve dominar:</p>
+        </div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">1</div><div><h4>Posição / Empunhadura</h4><p>Pés na largura dos ombros, coronha firme no ombro, mão de apoio na telha. Corpo inclinado à frente para absorver recuo.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">2</div><div><h4>Visada (pontaria)</h4><p>Alinhar <strong>massa de mira + alça de mira + alvo</strong>. Olho dominante aberto, foco na massa de mira.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">3</div><div><h4>Respiração</h4><p>Expirar parcialmente e <strong>pausar a respiração</strong> no momento do disparo. Evita tremor.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">4</div><div><h4>Acionamento do Gatilho</h4><p>Pressionar com a <strong>ponta do dedo indicador (falange distal)</strong>, de forma progressiva e suave. Nunca puxar de uma vez.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">5</div><div><h4>Acompanhamento — Follow-through (manter a posição)</h4><p>Manter posição e visada <strong>após o disparo</strong>. Não relaxar na hora do tiro. Avaliar onde acertou.</p></div></div>
+        <div class="gen"><div class="gn" style="color:var(--grn);">6</div><div><h4>Controle do Recuo</h4><p>Coronha bem encaixada no ombro + inclinação para frente = controle. Nunca coronha solta.</p></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ══════ S12 — ENCERRAMENTO ══════ -->
+<section class="slide" id="s12" data-titulo="Fim">
+<div class="inner" style="justify-content:center;align-items:center;text-align:center;">
+  <div style="max-width:800px;width:100%;">
+    <!-- Nome grande primeiro -->
+    <div style="margin-bottom:0.6rem;">
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,6vw,4.5rem);letter-spacing:6px;color:var(--br);line-height:1;">RICARDO TAIRA</div>
+      <div style="font-size:clamp(0.85rem,1.8vw,1.1rem);color:var(--goldb);letter-spacing:3px;text-transform:uppercase;font-weight:600;margin-top:4px;">Instrutor de Armamento e Tiro — IAT</div>
+      <div style="font-size:clamp(0.72rem,1.4vw,0.92rem);color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:2px;">Formado na Combat Tático · Escola de Formação em Armamento e Tiro</div>
+    </div>
+    <!-- Instagram — logo clicável -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:12px;margin-bottom:1rem;">
+      <a href="https://www.instagram.com/ricardo_taira/" target="_blank" style="display:flex;flex-direction:column;align-items:center;gap:8px;text-decoration:none;transition:transform 0.3s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:clamp(60px,15vw,90px);height:clamp(60px,15vw,90px);fill:var(--goldb);filter:drop-shadow(0 2px 8px rgba(191,144,32,0.3));"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        <span style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.2rem,4vw,1.8rem);color:var(--goldb);letter-spacing:3px;">@ricardo_taira</span>
+      </a>
+      <p style="font-size:clamp(0.78rem,2.5vw,0.92rem);color:var(--muted);letter-spacing:1px;">Clique na imagem para me seguir no Instagram</p>
+    </div>
+    <!-- Frase no final -->
+    <div style="border-top:2px solid rgba(191,144,32,0.3);padding-top:0.8rem;">
+      <p style="font-family:'Bebas Neue',sans-serif;font-size:clamp(1.2rem,4vw,2rem);letter-spacing:4px;color:var(--br);line-height:1.15;">
+        "ARMA SEGURA<br><span style="color:var(--goldb);">É ARMA NA MÃO DE QUEM SABE USAR"</span>
+      </p>
+    </div>
+  </div>
+</div>
+</section>
+
+</div><!-- /deck -->
+
+<!-- DICA MOBILE -->
+<div class="rotate-hint" id="rotateHint" onclick="this.style.display='none'">
+  <span>📱↔️</span> Gire o celular para melhor visualização
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="fecharLb(event)">
+  <span class="lb-fechar" onclick="fecharLb(event)">✕</span>
+  <img id="lbImg" src="" alt="">
+  <div class="lb-legenda" id="lbLeg"></div>
+</div>
+
+<script>
+/* ══════════════ CANVAS CARTUCHOS ══════════════ */
+(function(){
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  let W,H,bs;
+  function resize(){W=c.width=innerWidth;H=c.height=innerHeight;}
+  function mk(){return{x:Math.random()*W,y:Math.random()*H,rot:Math.random()*Math.PI*2,sp:.12+Math.random()*.18,rs:(Math.random()-.5)*.004,sc:.45+Math.random()*.55,al:.14+Math.random()*.10};}
+  function draw(b){
+    ctx.save();ctx.globalAlpha=b.al;ctx.translate(b.x,b.y);ctx.rotate(b.rot);ctx.scale(b.sc,b.sc);
+    ctx.beginPath();ctx.roundRect(-6,-18,12,32,[4]);ctx.fillStyle='#8B4513';ctx.fill();
+    ctx.beginPath();ctx.roundRect(-6,-18,5,32,[4,0,0,4]);ctx.fillStyle='rgba(255,255,255,.1)';ctx.fill();
+    ctx.beginPath();ctx.roundRect(-6,-18,12,7,[4,4,0,0]);ctx.fillStyle='#5a2a00';ctx.fill();
+    ctx.beginPath();ctx.roundRect(-7,12,14,6,[0,0,3,3]);ctx.fillStyle='#b8860b';ctx.fill();
+    ctx.beginPath();ctx.roundRect(-8,16,16,5,[0,0,4,4]);ctx.fillStyle='#909090';ctx.fill();
+    ctx.beginPath();ctx.arc(0,19,3,0,Math.PI*2);ctx.fillStyle='#c89820';ctx.fill();
+    ctx.restore();
+  }
+  function frame(){
+    ctx.clearRect(0,0,W,H);
+    bs.forEach(b=>{b.y+=b.sp;b.rot+=b.rs;if(b.y>H+28){b.y=-28;b.x=Math.random()*W;}draw(b);});
+    requestAnimationFrame(frame);
+  }
+  window.addEventListener('resize',resize);
+  resize();bs=Array.from({length:44},mk);frame();
+})();
+
+/* ══════════════ HERO SMOKE PARTICLES ══════════════ */
+(function(){
+  const smoke=document.getElementById('heroSmoke');
+  if(!smoke)return;
+  for(let i=0;i<12;i++){
+    const p=document.createElement('div');
+    p.className='smoke-p';
+    p.style.left=Math.random()*80+10+'%';
+    p.style.bottom=Math.random()*20+'%';
+    p.style.animationDelay=Math.random()*4+'s';
+    p.style.width=p.style.height=6+Math.random()*10+'px';
+    smoke.appendChild(p);
+  }
+})();
+
+/* ══════════════ NAVEGAÇÃO ══════════════ */
+const slides=Array.from(document.querySelectorAll('.slide'));
+const N=slides.length;
+let cur=0,bloq=false;
+
+// Monta nav e dots
+const navEl=document.getElementById('navb');
+const ctrEl=document.getElementById('ctr');
+const progEl=document.getElementById('prog');
+
+slides.forEach((s,i)=>{
+  const li=document.createElement('li');
+  const a=document.createElement('a');
+  a.href='#';a.textContent=s.dataset.titulo||'Slide '+(i+1);
+  a.addEventListener('click',e=>{e.preventDefault();ir(i);});
+  li.appendChild(a);navEl.appendChild(li);
+  const d=document.createElement('div');
+  d.className='dot';d.addEventListener('click',()=>ir(i));
+  ctrEl.appendChild(d);
+});
+
+function atualizarUI(){
+  navEl.querySelectorAll('a').forEach((a,i)=>a.classList.toggle('on',i===cur));
+  ctrEl.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('on',i===cur));
+  progEl.style.width=((cur/(N-1))*100)+'%';
+  // Sig color: light on dark slides (hero, video)
+  var sig=document.querySelector('.sig');
+  if(sig){
+    var darkSlides=['s0','s6b'];
+    sig.classList.toggle('sig-light',darkSlides.indexOf(slides[cur].id)>-1);
+  }
+}
+
+function ir(para){
+  if(bloq||para===cur||para<0||para>=N)return;
+  bloq=true;
+  slides[cur].classList.remove('ativo');
+  slides[cur].classList.add('saindo');
+  const sai=cur; cur=para;
+  slides[cur].classList.add('ativo');
+  atualizarUI();
+  setTimeout(()=>{slides[sai].classList.remove('saindo');bloq=false;},450);
+}
+
+function mover(d){ir(cur+d);}
+
+/* ══════════════ TODAS AS FORMAS DE NAVEGAR ══════════════ */
+// Teclado: setas, espaço, PageUp/Down, Home/End
+document.addEventListener('keydown',e=>{
+  if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)){e.preventDefault();mover(1);}
+  else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){e.preventDefault();mover(-1);}
+  else if(e.key==='Home'){e.preventDefault();ir(0);}
+  else if(e.key==='End'){e.preventDefault();ir(N-1);}
+});
+
+// Scroll do mouse / trackpad (debounced) — só navega se slide não tem scroll interno
+let swt=0;
+window.addEventListener('wheel',e=>{
+  const now=Date.now();
+  if(now-swt<500)return;
+  const activeSlide=slides[cur];
+  const canScroll=activeSlide.scrollHeight>activeSlide.clientHeight+10;
+  if(canScroll){
+    const atTop=activeSlide.scrollTop<=5;
+    const atBot=activeSlide.scrollTop+activeSlide.clientHeight>=activeSlide.scrollHeight-5;
+    if(e.deltaY>0 && !atBot)return;
+    if(e.deltaY<0 && !atTop)return;
+  }
+  swt=now;
+  if(e.deltaY>0)mover(1);
+  else if(e.deltaY<0)mover(-1);
+},{passive:true});
+
+// Swipe touch — só navega se swipe for horizontal
+let tx0=0,ty0=0;
+document.addEventListener('touchstart',e=>{tx0=e.touches[0].clientX;ty0=e.touches[0].clientY;},{passive:true});
+document.addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx0;
+  const dy=e.changedTouches[0].clientY-ty0;
+  if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)*1.5)mover(dx<0?1:-1);
+},{passive:true});
+
+// Inicia
+slides[0].classList.add('ativo');
+atualizarUI();
+
+/* ══════════════ LIGHTBOX ══════════════ */
+const lb=document.getElementById('lightbox');
+const lbImg=document.getElementById('lbImg');
+const lbLeg=document.getElementById('lbLeg');
+
+document.querySelectorAll('.slide img:not(.qr-nolight)').forEach(img=>{
+  img.classList.add('clicavel');
+  img.addEventListener('click',function(e){
+    e.stopPropagation();
+    lbImg.src=this.src;
+    lbLeg.textContent=this.alt||'';
+    lb.classList.add('aberto');
+  });
+});
+
+function fecharLb(e){
+  if(e.target===lbImg)return;
+  lb.classList.remove('aberto');
+}
+
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&lb.classList.contains('aberto')){
+    lb.classList.remove('aberto');
+  }
+});
+
+/* ══════════════ DICA GIRE O CELULAR ══════════════ */
+(function(){
+  const hint=document.getElementById('rotateHint');
+  if(!hint)return;
+  // Esconder após 6 segundos
+  setTimeout(()=>{hint.style.animation='hintOut .5s forwards';setTimeout(()=>hint.style.display='none',500);},6000);
+  // Esconder quando girar para landscape
+  window.addEventListener('orientationchange',()=>{
+    if(window.innerWidth>window.innerHeight)hint.style.display='none';
+  });
+  window.matchMedia('(orientation:landscape)').addEventListener('change',e=>{
+    if(e.matches)hint.style.display='none';
+  });
+})();
+</script>
+</body>
+</html>
